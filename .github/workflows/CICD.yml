@@ -2,7 +2,10 @@ name: MoongChee CICD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
