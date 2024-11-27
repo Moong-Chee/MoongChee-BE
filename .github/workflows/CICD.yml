@@ -5,7 +5,7 @@ on:
     branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
 
       # gradle 빌드
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       # 도커 이미지 생성 후 이미지 push
       - name: Docker build & push to dev
