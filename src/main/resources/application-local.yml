@@ -11,3 +11,12 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+moongchee:
+  jwt:
+    key: ${JWT_KEY}
+    access:
+      expiration: ${ACCESS_EXP}
+      header: ${ACCESS_HEAD}
+    refresh:
+      expiration: ${REFRESH_EXP}
+      header: ${REFRESH_HEAD}
