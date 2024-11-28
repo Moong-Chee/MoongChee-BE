@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.entity.Post;
+import project.MoongChee.domain.post.entity.PostStatus;
 import project.MoongChee.domain.post.repository.PostRepository;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.service.UserService;
@@ -26,6 +27,7 @@ public class PostService {
                 .productContent(requestDTO.getProductContent())
                 .keyword(requestDTO.getKeyword())
                 .productStatus(requestDTO.getProductStatus())
+                .postStatus(PostStatus.ACTIVE)//기본값 ACTIVE
                 .build();
         postRepository.save(post);
         return PostResponseDTO.from(post);

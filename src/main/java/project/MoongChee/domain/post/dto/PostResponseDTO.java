@@ -28,13 +28,13 @@ public class PostResponseDTO {
     @NotBlank
     private String productContent;
 
-    @NotBlank
+    @NotBlank//PostRequestDTO에서 PostKeyword keyword로 설정하고 여기서는 String 타입으로 keyword를 설정해서 스웨거에서는 string으로 보일 것입니다.
     private String keyword;
 
     @NotBlank
     private String productStatus;
 
-    @NotBlank
+    @NotBlank//PostRequestDTO에서 PostStatus postStatus로 설정하고 여기서는 String 타입으로 postStatus를 설정해서 스웨거에서는 string으로 보일 것입니다.
     private String postStatus;
 
     private LocalDateTime createdAt;
