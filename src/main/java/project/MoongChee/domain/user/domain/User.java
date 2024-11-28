@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.AccessLevel;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.global.common.domain.BaseTimeEntity;
 
@@ -38,19 +40,24 @@ public class User extends BaseTimeEntity {
 
     private String name;
 
-    private String profileImageUrl;
+    @OneToOne(mappedBy = "user")
+    private Image profileImage;
 
     private String phoneNumber;
 
-    private String birthday;
+    private LocalDate birthday;
 
     @Enumerated(EnumType.STRING)
     private Department department;
 
     private long studentNumber;
 
-    public void initProfile(UserInitializeRequest dto) {
-        this.birth = dto.birth();
+    public void initProfile(UserInitializeRequest dto, Image profileImage) {
         this.customId = dto.customId();
+        this.phoneNumber = dto.phoneNumber();
+        this.birthday = dto.birthday();
+        this.studentNumber = dto.studentNumber();
+        this.department = dto.department();
+        this.profileImage = profileImage;
     }
 }
