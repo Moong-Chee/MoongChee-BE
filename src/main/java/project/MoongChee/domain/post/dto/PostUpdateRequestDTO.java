@@ -8,12 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import project.MoongChee.domain.post.entity.PostKeyword;
+import project.MoongChee.domain.post.entity.PostStatus;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class PostRequestDTO {
+@AllArgsConstructor
+public class PostUpdateRequestDTO {
     @NotBlank
     private String name;
 
@@ -30,9 +31,11 @@ public class PostRequestDTO {
     private String productStatus;
 
     @NotNull
+    private PostStatus postStatus;
+
+    @NotNull
     private LocalDate returnDate;
 
     @NotNull
     private Integer rentalPrice;
-
 }
