@@ -7,8 +7,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
+import project.MoongChee.domain.user.dto.response.UserProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
 import project.MoongChee.domain.user.exception.DuplicateCustomIdException;
 import project.MoongChee.domain.user.exception.UserNotFoundException;
@@ -27,7 +29,9 @@ public class UserService {
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
 
-
+    /*
+     * 인증 관련
+     */
     @Transactional
     public UserSocialLoginResponse authenticate(String authCode) {
         GoogleTokenResponse token = authService.getGoogleAccessToken(authCode);
@@ -43,13 +47,9 @@ public class UserService {
         return registerUser(userInfo);
     }
 
-    @Transactional
-    public void initProfile(UserInitializeRequest dto, String email) {
-        User user = find(email);
-        valid(dto.customId());
-        user.initProfile(dto);
-    }
-
+    /*
+     * 로그인, 회원가입 관련
+     */
     private UserSocialLoginResponse loginUser(String email) {
         User user = find(email);
         String customId = null;
@@ -70,6 +70,32 @@ public class UserService {
         return new UserSocialLoginResponse(user.getId(), REGISTER, null, generateToken(user.getEmail()));
     }
 
+    /*
+     * 회원가입 시 초기 정보 입력
+     */
+    @Transactional
+    public void initProfile(UserInitializeRequest dto, String email) {
+        User user = find(email);
+        valid(dto.customId());
+        user.initProfile(dto);
+    }
+
+    /*
+     * 구글 계정 기본 프로필 정보 반환
+     */
+    public UserProfileResponse getProfile(String customId, String email) {
+        User user = userRepository.findByCustomId(customId)
+                .orElseThrow(UserNotFoundException::new);
+        Department department = user.getDepartment();
+        long studentNumber = user.getStudentNumber();
+        String birthday = user.getBirthday();
+
+        return UserProfileResponse.from(user, department, studentNumber, birthday);
+    }
+
+    /*
+     * email 토큰 생성
+     */
     private JwtResponse generateToken(String email) {
         return JwtResponse.builder()
                 .accessToken(jwtProvider.generateAccessToken(email))
@@ -77,6 +103,9 @@ public class UserService {
                 .build();
     }
 
+    /*
+     * userRepository 관련
+     */
     private void valid(String customId) {
         if (userRepository.existsByCustomId(customId)) {
             throw new DuplicateCustomIdException();
