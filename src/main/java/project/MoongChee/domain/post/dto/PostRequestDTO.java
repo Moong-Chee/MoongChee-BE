@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.MoongChee.domain.post.entity.PostKeyword;
 
 @Getter
 @Setter
@@ -21,6 +22,6 @@ public class PostRequestDTO {
     private String productContent;
 
     @NotBlank
-    private String keyword;
-    
+    private PostKeyword keyword;
+
 }
