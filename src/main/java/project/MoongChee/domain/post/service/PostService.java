@@ -25,6 +25,7 @@ public class PostService {
                 .productImageUrl(requestDTO.getProductImageUrl())
                 .productContent(requestDTO.getProductContent())
                 .keyword(requestDTO.getKeyword())
+                .productStatus(requestDTO.getProductStatus())
                 .build();
         postRepository.save(post);
         return PostResponseDTO.from(post);

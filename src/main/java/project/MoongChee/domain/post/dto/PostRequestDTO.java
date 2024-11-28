@@ -24,4 +24,7 @@ public class PostRequestDTO {
     @NotBlank
     private PostKeyword keyword;
 
+    @NotBlank
+    private String productStatus;
+
 }

@@ -31,6 +31,9 @@ public class PostResponseDTO {
     @NotBlank
     private String keyword;
 
+    @NotBlank
+    private String productStatus;
+
     private LocalDateTime createdAt;
 
     public static PostResponseDTO from(Post post) {
@@ -41,6 +44,7 @@ public class PostResponseDTO {
                 .productImageUrl(post.getProductImageUrl())
                 .productContent(post.getProductContent())
                 .keyword(post.getKeyword().name())
+                .productStatus(post.getProductStatus())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

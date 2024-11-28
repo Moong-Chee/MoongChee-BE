@@ -50,4 +50,7 @@ public class Post extends BaseTimeEntity {
     @Column(name = "keyword")
     private PostKeyword keyword;
 
+    @Column(name = "product_status")
+    private String productStatus;
+
 }
