@@ -34,8 +34,6 @@ public class User extends BaseTimeEntity {
 
     private String customId;
 
-    private LocalDate birth;
-
     private String email;
 
     private String name;
