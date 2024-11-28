@@ -1,6 +1,8 @@
 package project.MoongChee.domain.user.dto.response;
 
+import java.time.LocalDate;
 import lombok.Builder;
+import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.User;
 
@@ -9,24 +11,24 @@ public record UserProfileResponse(
         Long userId,
         String name,
         String customId,
-        String profileImageUrl,
+        Image profileImageUrl,
 
         String phoneNumber,
 
-        String birthday,
+        LocalDate birthday,
 
         Department department,
 
         long studentNumber
 ) {
-    public static UserProfileResponse from(User user, Department department, long studentNumber, String birthday) {
+    public static UserProfileResponse from(User user, Department department, long studentNumber, LocalDate birthday) {
         return UserProfileResponse.builder()
                 .userId(user.getId())
                 .name(user.getName())
                 .customId(user.getCustomId())
-                .profileImageUrl(user.getProfileImageUrl())
+                .profileImageUrl(user.getProfileImage())
                 .phoneNumber(user.getPhoneNumber())
-                .birthday(user.getBirthday())
+                .birthday(birthday)
                 .department(user.getDepartment())
                 .studentNumber(user.getStudentNumber())
                 .build();
