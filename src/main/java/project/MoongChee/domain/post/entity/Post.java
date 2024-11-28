@@ -62,4 +62,7 @@ public class Post extends BaseTimeEntity {
     @Column(name = "return_date")//대여 만료일. 언제까지 대여가능한지
     private LocalDate returnDate;//프론트에서 input type="date"를 사용했다는 가정을 하여 LocalDate 사용
 
+    @Column(name = "rental_price")
+    private Integer rentalPrice;
+
 }

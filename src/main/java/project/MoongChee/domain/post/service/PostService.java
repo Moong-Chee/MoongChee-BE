@@ -29,6 +29,7 @@ public class PostService {
                 .productStatus(requestDTO.getProductStatus())
                 .postStatus(PostStatus.ACTIVE)//기본값 ACTIVE
                 .returnDate(requestDTO.getReturnDate())
+                .rentalPrice(requestDTO.getRentalPrice())
                 .build();
         postRepository.save(post);
         return PostResponseDTO.from(post);

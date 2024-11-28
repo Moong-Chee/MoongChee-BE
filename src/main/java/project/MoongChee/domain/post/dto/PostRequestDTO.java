@@ -32,4 +32,7 @@ public class PostRequestDTO {
     @NotNull
     private LocalDate returnDate;
 
+    @NotNull
+    private Integer rentalPrice;
+
 }
