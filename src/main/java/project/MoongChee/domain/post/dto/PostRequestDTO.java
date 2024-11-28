@@ -1,6 +1,8 @@
 package project.MoongChee.domain.post.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +28,8 @@ public class PostRequestDTO {
 
     @NotBlank
     private String productStatus;
+
+    @NotNull
+    private LocalDate returnDate;
 
 }

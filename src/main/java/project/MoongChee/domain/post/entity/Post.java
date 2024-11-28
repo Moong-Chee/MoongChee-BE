@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,5 +58,8 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_status")
     @Builder.Default
     private PostStatus postStatus = PostStatus.ACTIVE;//기본값을 설정해서 처음 대여 게시글을 설정하면 ACTIVE 상태가 되도록 한다.
+
+    @Column(name = "return_date")//대여 만료일. 언제까지 대여가능한지
+    private LocalDate returnDate;//프론트에서 input type="date"를 사용했다는 가정을 하여 LocalDate 사용
 
 }

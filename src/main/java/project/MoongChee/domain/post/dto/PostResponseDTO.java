@@ -1,6 +1,8 @@
 package project.MoongChee.domain.post.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +39,9 @@ public class PostResponseDTO {
     @NotBlank//PostRequestDTO에서 PostStatus postStatus로 설정하고 여기서는 String 타입으로 postStatus를 설정해서 스웨거에서는 string으로 보일 것입니다.
     private String postStatus;
 
+    @NotNull
+    private LocalDate returnDate;
+
     private LocalDateTime createdAt;
 
     public static PostResponseDTO from(Post post) {
@@ -49,6 +54,7 @@ public class PostResponseDTO {
                 .keyword(post.getKeyword().name())
                 .productStatus(post.getProductStatus())
                 .postStatus(post.getPostStatus().name())
+                .returnDate(post.getReturnDate())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

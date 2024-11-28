@@ -28,6 +28,7 @@ public class PostService {
                 .keyword(requestDTO.getKeyword())
                 .productStatus(requestDTO.getProductStatus())
                 .postStatus(PostStatus.ACTIVE)//기본값 ACTIVE
+                .returnDate(requestDTO.getReturnDate())
                 .build();
         postRepository.save(post);
         return PostResponseDTO.from(post);
