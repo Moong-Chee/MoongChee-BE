@@ -53,4 +53,9 @@ public class Post extends BaseTimeEntity {
     @Column(name = "product_status")
     private String productStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "post_status")
+    @Builder.Default
+    private PostStatus postStatus = PostStatus.ACTIVE;//기본값을 설정해서 처음 대여 게시글을 설정하면 ACTIVE 상태가 되도록 한다.
+
 }
