@@ -31,7 +31,7 @@ public class PostUpdateRequestDTO {
     private String productStatus;
 
     @NotNull
-    private PostStatus postStatus;
+    private PostStatus postStatus;//대여 게시물 수정에서는 게시물의 상태를 변경할 수 있게 한다.
 
     @NotNull
     private LocalDate returnDate;

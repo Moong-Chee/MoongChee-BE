@@ -30,6 +30,7 @@ public class PostController {
                 PostResponseMessage.POST_CREATE_SUCCESS.getMessage(), response);
     }
 
+    //게시물 수정
     @PatchMapping("/{postId}")
     public ApiData<PostResponseDTO> updatePost(@PathVariable Long postId,
                                                @RequestBody @Valid PostUpdateRequestDTO requestDTO,
