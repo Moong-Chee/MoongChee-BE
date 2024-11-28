@@ -2,7 +2,6 @@ package project.MoongChee.domain.user.dto.response;
 
 import java.time.LocalDate;
 import lombok.Builder;
-import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.User;
 
@@ -11,7 +10,7 @@ public record UserProfileResponse(
         Long userId,
         String name,
         String customId,
-        Image profileImageUrl,
+        String profileImageUrl,
 
         String phoneNumber,
 
@@ -26,7 +25,7 @@ public record UserProfileResponse(
                 .userId(user.getId())
                 .name(user.getName())
                 .customId(user.getCustomId())
-                .profileImageUrl(user.getProfileImage())
+                .profileImageUrl(user.getProfileImage().getUrl())
                 .phoneNumber(user.getPhoneNumber())
                 .birthday(birthday)
                 .department(user.getDepartment())
