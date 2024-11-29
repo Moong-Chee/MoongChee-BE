@@ -1,5 +1,7 @@
 package project.MoongChee.domain.post.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,12 +19,14 @@ import project.MoongChee.global.common.response.ApiData;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "POST")
 @RequestMapping("/api/v1/posts")
 public class PostController {
     private final PostService postService;
 
     //게시물 생성
     @PostMapping
+    @Operation(summary = "게시글 생성")
     public ApiData<PostResponseDTO> createPost(@RequestBody @Valid PostRequestDTO requestDTO,
                                                @AuthenticationPrincipal String email) {
         PostResponseDTO response = postService.createPost(requestDTO, email);
@@ -32,6 +36,7 @@ public class PostController {
 
     //게시물 수정
     @PatchMapping("/{postId}")
+    @Operation(summary = "게시글 수정")
     public ApiData<PostResponseDTO> updatePost(@PathVariable Long postId,
                                                @RequestBody @Valid PostUpdateRequestDTO requestDTO,
                                                @AuthenticationPrincipal String email) {
