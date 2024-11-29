@@ -1,5 +1,6 @@
 package project.MoongChee.domain.post.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,14 +11,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.global.common.domain.BaseTimeEntity;
 
@@ -41,8 +46,9 @@ public class Post extends BaseTimeEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "profile_image_url")
-    private String productImageUrl;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Image> productImages = new ArrayList<>();
 
     @Column(name = "product_content")
     private String productContent;
@@ -64,5 +70,15 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "rental_price")
     private Integer rentalPrice;
+
+    public void addImage(Image image) {
+        this.productImages.add(image);
+        image.setPost(this);
+    }
+
+    public void removeImage(Image image) {
+        productImages.remove(image);
+        image.setPost(null);
+    }
 
 }
