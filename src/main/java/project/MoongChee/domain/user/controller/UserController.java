@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.user.domain.LoginStatus;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.domain.user.dto.request.UserSocialLoginRequest;
@@ -44,10 +47,12 @@ public class UserController {
     }
 
     @PatchMapping("/init")
-    @Operation(summary = "최초 로그인시 정보 입력")
-    public ApiData<String> initUserProfile(@RequestBody @Valid UserInitializeRequest request,
-                                           @AuthenticationPrincipal @Parameter(hidden = true) String email) {// 스웨거에서 해당 정보 입력을 받지 않기 위해 hidden으로 설정
-        userService.initProfile(request, email);
+    @Operation(summary = "초기 기본정보 입력")
+    public ApiData<String> initUserProfile(@RequestPart("request") @Valid UserInitializeRequest request,
+                                           @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+                                           @AuthenticationPrincipal @Parameter(hidden = true) String email)
+            throws IOException {// 스웨거에서 해당 정보 입력을 받지 않기 위해 hidden으로 설정
+        userService.initProfile(request, profileImage, email);
         return ApiData.response(INIT_PROFILE_SUCCESS.getCode(), INIT_PROFILE_SUCCESS.getMessage());
     }
 

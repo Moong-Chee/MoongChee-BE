@@ -1,7 +1,29 @@
 spring:
   profiles:
     active: local
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
 springdoc:
   swagger-ui:
     operations-sorter: method
     tags-sorter: alpha
+
+aws:
+  s3:
+    accessKey: ${S3_ACCESS_KEY}
+    secretKey: ${S3_SECRET_KEY}
+    bucketName: ${S3_BUCKET}
+    region: ${S3_REGION}
+  stack:
+    auto: false
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  redirect-uri: ${GOOGLE_REDIRECT_URI}
+  grant-type: ${GOOGLE_GRANT_TYPE}
+  token-uri: ${GOOGLE_TOKEN_URI}
+  user-info-uri: ${GOOGLE_USER_INFO_URI}

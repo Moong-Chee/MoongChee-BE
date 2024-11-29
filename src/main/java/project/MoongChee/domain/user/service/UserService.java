@@ -4,9 +4,15 @@ import static project.MoongChee.domain.user.domain.LoginStatus.LOGIN;
 import static project.MoongChee.domain.user.domain.LoginStatus.REGISTER;
 
 import jakarta.transaction.Transactional;
+import java.io.IOException;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import project.MoongChee.domain.image.domain.Image;
+import project.MoongChee.domain.image.dto.request.ImageDto;
+import project.MoongChee.domain.image.service.ImageService;
 import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
@@ -26,6 +32,7 @@ import project.MoongChee.global.auth.oauth.dto.GoogleUserInfoResponse;
 @RequiredArgsConstructor
 public class UserService {
     private final AuthService authService;
+    private final ImageService imageService;
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
 
@@ -74,10 +81,18 @@ public class UserService {
      * 회원가입 시 초기 정보 입력
      */
     @Transactional
-    public void initProfile(UserInitializeRequest dto, String email) {
+    public void initProfile(UserInitializeRequest dto, MultipartFile profileImage, String email) throws IOException {
         User user = find(email);
+        Image savedImage = user.getProfileImage();
+        // 이미지가 없다면 새로 생성해서 저장
+        if (savedImage == null) {
+            savedImage = imageService.save(profileImage, user);
+        } else if (profileImage != null) {
+            ImageDto imageDto = imageService.getImage(profileImage);
+            savedImage.update(imageDto);
+        }
         valid(dto.customId());
-        user.initProfile(dto);
+        user.initProfile(dto, savedImage);
     }
 
     /*
@@ -88,7 +103,7 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
         Department department = user.getDepartment();
         long studentNumber = user.getStudentNumber();
-        String birthday = user.getBirthday();
+        LocalDate birthday = user.getBirthday();
 
         return UserProfileResponse.from(user, department, studentNumber, birthday);
     }
