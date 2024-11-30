@@ -11,6 +11,6 @@ import project.MoongChee.domain.user.domain.User;
 public class UserUpdateService {
     @Transactional
     public void accept(User user) {
-        user.isInactive(Status.ACTIVE); // 상태를 ACTIVE로 변경
+        user.changeActive(Status.ACCEPTED); // 상태를 ACTIVE로 변경
     }
 }
