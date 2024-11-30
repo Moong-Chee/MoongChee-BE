@@ -67,4 +67,13 @@ public class PostController {
         return ApiData.response(PostResponseMessage.POST_GETALL_SUCCESS.getCode(),
                 PostResponseMessage.POST_GETALL_SUCCESS.getMessage(), posts);
     }
+
+    //게시물 하나 조회
+    @GetMapping("/{postId}")
+    @Operation(summary = "게시물 하나 조회")
+    public ApiData<PostResponseDTO> getPostById(@PathVariable Long postId) {
+        PostResponseDTO post = postService.getPostById(postId);
+        return ApiData.response(PostResponseMessage.POST_GETONE_SUCCESS.getCode(),
+                PostResponseMessage.POST_GETONE_SUCCESS.getMessage(), post);
+    }
 }

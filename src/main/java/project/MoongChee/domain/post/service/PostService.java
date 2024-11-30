@@ -87,4 +87,11 @@ public class PostService {
         Page<Post> posts = postRepository.findAll(pageable);
         return posts.map(PostResponseDTO::from);
     }
+
+    @Transactional
+    public PostResponseDTO getPostById(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+        return PostResponseDTO.from(post);
+    }
 }
