@@ -17,6 +17,8 @@ import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
 import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.post.entity.PostKeyword;
 import project.MoongChee.domain.post.entity.PostStatus;
+import project.MoongChee.domain.post.exception.KeywordNotFoundException;
+import project.MoongChee.domain.post.exception.NameNotFoundException;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.repository.PostRepository;
 import project.MoongChee.domain.user.domain.User;
@@ -111,9 +113,19 @@ public class PostService {
         List<Post> searchPosts = postRepository.searchPosts(name, keyword)
                 .stream()
                 .collect(Collectors.toList());
+
         if (searchPosts.isEmpty()) {
-            throw new PostNotFoundException();
+            if (name != null && keyword != null) {
+                throw new PostNotFoundException();
+            } else if (name != null) {
+                throw new NameNotFoundException();
+            } else if (keyword != null) {
+                throw new KeywordNotFoundException();
+            } else {
+                throw new PostNotFoundException();
+            }
         }
+
         return searchPosts.stream()
                 .map(PostResponseDTO::from)
                 .collect(Collectors.toList());
