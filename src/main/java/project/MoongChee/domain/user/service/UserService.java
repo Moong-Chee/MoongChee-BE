@@ -14,6 +14,7 @@ import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.image.dto.request.ImageDto;
 import project.MoongChee.domain.image.service.ImageService;
 import project.MoongChee.domain.user.domain.Department;
+import project.MoongChee.domain.user.domain.Status;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
@@ -70,6 +71,7 @@ public class UserService {
         User user = User.builder()
                 .name(userInfo.name())
                 .email(userInfo.email())
+                .status(Status.WAITING)
                 .build();
 
         userRepository.save(user);
