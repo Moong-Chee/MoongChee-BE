@@ -63,10 +63,10 @@ public class User extends BaseTimeEntity {
     }
 
     public boolean isInactive() {
-        return this.status != Status.ACTIVE;
+        return this.status != Status.ACCEPTED;
     }
 
-    public void isInactive(Status newStatus) {
+    public void changeActive(Status newStatus) {
         this.status = newStatus;
     }
 }
