@@ -29,7 +29,7 @@ import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
 import project.MoongChee.domain.user.service.UserService;
 import project.MoongChee.global.common.response.ApiData;
 
-@Tag(name = "USER")
+@Tag(name = "USER", description = "유저 컨트롤러")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
