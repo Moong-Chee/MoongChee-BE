@@ -4,11 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.post.entity.Post;
 
 @Getter
@@ -25,7 +28,7 @@ public class PostResponseDTO {
     @NotBlank
     private String name;
 
-    private String productImageUrl;
+    private List<String> productImageUrls;
 
     @NotBlank
     private String productContent;
@@ -48,11 +51,15 @@ public class PostResponseDTO {
     private LocalDateTime createdAt;
 
     public static PostResponseDTO from(Post post) {
+        List<String> productImageUrls = post.getProductImages().stream()
+                .map(Image::getUrl)
+                .collect(Collectors.toList());
+
         return PostResponseDTO.builder()
                 .postId(post.getPostId())
                 .authorName(post.getAuthor().getName())
                 .name(post.getName())
-                .productImageUrl(post.getProductImageUrl())
+                .productImageUrls(productImageUrls)
                 .productContent(post.getProductContent())
                 .keyword(post.getKeyword().name())
                 .productStatus(post.getProductStatus())

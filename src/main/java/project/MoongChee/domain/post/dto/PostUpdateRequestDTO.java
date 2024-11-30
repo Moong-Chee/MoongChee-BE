@@ -19,9 +19,6 @@ public class PostUpdateRequestDTO {
     private String name;
 
     @NotBlank
-    private String productImageUrl;
-
-    @NotBlank
     private String productContent;
 
     @NotNull
