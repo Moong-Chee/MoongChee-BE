@@ -3,6 +3,8 @@ package project.MoongChee.domain.post.service;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,5 +80,11 @@ public class PostService {
         }
         postRepository.save(post);
         return PostResponseDTO.from(post);
+    }
+
+    @Transactional//게시물 전체 조회
+    public Page<PostResponseDTO> getAllPosts(Pageable pageable) {
+        Page<Post> posts = postRepository.findAll(pageable);
+        return posts.map(PostResponseDTO::from);
     }
 }

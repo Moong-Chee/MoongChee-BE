@@ -6,12 +6,18 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,5 +55,16 @@ public class PostController {
         PostResponseDTO response = postService.updatePost(postId, requestDTO, productImages, email);
         return ApiData.response(PostResponseMessage.POST_UPDATE_SUCCESS.getCode(),
                 PostResponseMessage.POST_UPDATE_SUCCESS.getMessage(), response);
+    }
+
+    //게시물 전체 조회
+    @GetMapping
+    @Operation(summary = "전체 게시물 조회")
+    public ApiData<Page<PostResponseDTO>> getAllPosts(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<PostResponseDTO> posts = postService.getAllPosts(pageable);
+        return ApiData.response(PostResponseMessage.POST_GETALL_SUCCESS.getCode(),
+                PostResponseMessage.POST_GETALL_SUCCESS.getMessage(), posts);
     }
 }
