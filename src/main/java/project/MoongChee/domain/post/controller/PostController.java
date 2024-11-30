@@ -7,10 +7,6 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,17 +82,14 @@ public class PostController {
                 PostResponseMessage.POST_GETONE_SUCCESS.getMessage(), post);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search")//리스트를 통한 구현
     @Operation(summary = "게시물 이름, 키워드를 통한 검색")
-    public ApiData<Page<PostResponseDTO>> searchPosts(
+    public ApiData<List<PostResponseDTO>> searchPosts(
             @RequestParam(required = false) @Parameter(description = "이름") String name,
             @RequestParam(required = false) @Parameter(description = "키워드")
-            PostKeyword keyword,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<PostResponseDTO> posts = postService.searchPosts(name, keyword, pageable);
+            PostKeyword keyword) {
+        List<PostResponseDTO> postPage = postService.searchPosts(name, keyword);
         return ApiData.response(PostResponseMessage.POST_SEARCH_SUCCESS.getCode(),
-                PostResponseMessage.POST_SEARCH_SUCCESS.getMessage(), posts);
+                PostResponseMessage.POST_SEARCH_SUCCESS.getMessage(), postPage);
     }
 }
