@@ -20,6 +20,7 @@ import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
 import project.MoongChee.domain.user.exception.DuplicateCustomIdException;
+import project.MoongChee.domain.user.exception.InvalidEmailException;
 import project.MoongChee.domain.user.exception.UserNotFoundException;
 import project.MoongChee.domain.user.repository.UserRepository;
 import project.MoongChee.global.auth.jwt.JwtProvider;
@@ -46,6 +47,11 @@ public class UserService {
         GoogleUserInfoResponse userInfo = authService.getGoogleUserInfo(token.access_token());
 
         String email = userInfo.email();
+
+        // 이메일 도메인 검증
+        if (!email.endsWith("@gachon.ac.kr")) {
+            throw new InvalidEmailException(); // 또는 Custom 예외 사용
+        }
 
         // 가입된 유저라면 로그인
         if (existUser(email)) {
