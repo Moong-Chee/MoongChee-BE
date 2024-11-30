@@ -2,6 +2,7 @@ package project.MoongChee.domain.post.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,10 @@ import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
 import project.MoongChee.domain.post.entity.Post;
+import project.MoongChee.domain.post.entity.PostKeyword;
 import project.MoongChee.domain.post.entity.PostStatus;
+import project.MoongChee.domain.post.exception.KeywordNotFoundException;
+import project.MoongChee.domain.post.exception.NameNotFoundException;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.repository.PostRepository;
 import project.MoongChee.domain.user.domain.User;
@@ -78,5 +82,52 @@ public class PostService {
         }
         postRepository.save(post);
         return PostResponseDTO.from(post);
+    }
+
+    /*@Transactional//게시물 전체 조회
+    public Page<PostResponseDTO> getAllPosts(Pageable pageable) {
+        Page<Post> posts = postRepository.findAll(pageable);
+        return posts.map(PostResponseDTO::from);
+    }*/
+
+    @Transactional//리스트를 통한 게시물 전체 조회 기능 구현
+    public List<PostResponseDTO> getAllPosts() {
+        List<Post> postPage = postRepository.findAll()
+                .stream()
+                .collect(Collectors.toList());
+
+        return postPage.stream()
+                .map(PostResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PostResponseDTO getPostById(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+        return PostResponseDTO.from(post);
+    }
+
+    @Transactional//리스트를 이용한 게시물 검색으로 수정
+    public List<PostResponseDTO> searchPosts(String name, PostKeyword keyword) {
+        List<Post> searchPosts = postRepository.searchPosts(name, keyword)
+                .stream()
+                .collect(Collectors.toList());
+
+        if (searchPosts.isEmpty()) {
+            if (name != null && keyword != null) {
+                throw new PostNotFoundException();
+            } else if (name != null) {
+                throw new NameNotFoundException();
+            } else if (keyword != null) {
+                throw new KeywordNotFoundException();
+            } else {
+                throw new PostNotFoundException();
+            }
+        }
+
+        return searchPosts.stream()
+                .map(PostResponseDTO::from)
+                .collect(Collectors.toList());
     }
 }
