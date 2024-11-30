@@ -2,6 +2,7 @@ package project.MoongChee.domain.post.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -83,10 +84,21 @@ public class PostService {
         return PostResponseDTO.from(post);
     }
 
-    @Transactional//게시물 전체 조회
+    /*@Transactional//게시물 전체 조회
     public Page<PostResponseDTO> getAllPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
         return posts.map(PostResponseDTO::from);
+    }*/
+
+    @Transactional//리스트를 통한 게시물 전체 조회 기능 구현
+    public List<PostResponseDTO> getAllPosts() {
+        List<Post> postPage = postRepository.findAll()
+                .stream()
+                .collect(Collectors.toList());
+
+        return postPage.stream()
+                .map(PostResponseDTO::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional
