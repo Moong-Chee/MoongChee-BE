@@ -38,6 +38,9 @@ public class User extends BaseTimeEntity {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private Status status; // 사용자 상태
+
     @OneToOne(mappedBy = "user")
     private Image profileImage;
 
@@ -57,5 +60,13 @@ public class User extends BaseTimeEntity {
         this.studentNumber = dto.studentNumber();
         this.department = dto.department();
         this.profileImage = profileImage;
+    }
+
+    public boolean isInactive() {
+        return this.status != Status.ACTIVE;
+    }
+
+    public void isInactive(Status newStatus) {
+        this.status = newStatus;
     }
 }
