@@ -16,6 +16,7 @@ import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
 import project.MoongChee.domain.post.entity.Post;
+import project.MoongChee.domain.post.entity.PostKeyword;
 import project.MoongChee.domain.post.entity.PostStatus;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.repository.PostRepository;
@@ -93,5 +94,11 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
         return PostResponseDTO.from(post);
+    }
+
+    @Transactional
+    public Page<PostResponseDTO> searchPosts(String name, PostKeyword keyword, Pageable pageable) {
+        Page<Post> searchPosts = postRepository.searchPosts(name, keyword, pageable);
+        return searchPosts.map(PostResponseDTO::from);
     }
 }
