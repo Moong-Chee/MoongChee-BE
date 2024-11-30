@@ -99,6 +99,9 @@ public class PostService {
     @Transactional
     public Page<PostResponseDTO> searchPosts(String name, PostKeyword keyword, Pageable pageable) {
         Page<Post> searchPosts = postRepository.searchPosts(name, keyword, pageable);
+        if (searchPosts.isEmpty()) {
+            throw new PostNotFoundException();
+        }
         return searchPosts.map(PostResponseDTO::from);
     }
 }
