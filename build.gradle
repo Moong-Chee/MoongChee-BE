@@ -52,6 +52,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     // aws 의존성
     implementation 'software.amazon.awssdk:s3:2.20.86'
+    // WebSocket 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // Redis 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // MongoDB 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
 
 tasks.named('test') {
