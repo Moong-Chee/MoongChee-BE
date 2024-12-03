@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.post.entity.PostKeyword;
+import project.MoongChee.domain.post.entity.PostStatus;
 import project.MoongChee.domain.user.domain.User;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -17,4 +18,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
             "(:keyword IS NULL OR p.keyword = :keyword)")
     List<Post> searchPosts(@Param("name") String name, @Param("keyword") PostKeyword keyword);
+
+    List<Post> findByPostStatusNot(PostStatus status);
 }
