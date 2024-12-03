@@ -55,16 +55,6 @@ public class PostController {
                 PostResponseMessage.POST_UPDATE_SUCCESS.getMessage(), response);
     }
 
-    //게시물 전체 조회
-    /*@GetMapping
-    @Operation(summary = "전체 게시물 조회")
-    public ApiData<Page<PostResponseDTO>> getAllPosts(@RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("createdAt").descending());
-        Page<PostResponseDTO> posts = postService.getAllPosts(pageable);
-        return ApiData.response(PostResponseMessage.POST_GETALL_SUCCESS.getCode(),
-                PostResponseMessage.POST_GETALL_SUCCESS.getMessage(), posts);
-    }*/
-
     @GetMapping//리스트를 통한 구현. 피그마를 보니 페이지를 나누지 않고 스크롤을 통한 구현이 이루어졌기에 리스트를 통한 구현으로 수정하였습니다.
     @Operation(summary = "전체 게시물 조회")
     public ApiData<List<PostResponseDTO>> getAllPosts() {
@@ -92,4 +82,14 @@ public class PostController {
         return ApiData.response(PostResponseMessage.POST_SEARCH_SUCCESS.getCode(),
                 PostResponseMessage.POST_SEARCH_SUCCESS.getMessage(), postPage);
     }
+
+    @PostMapping("/like/{postId}")
+    @Operation(summary = "게시물 관심 등록")
+    public ApiData<Void> addLikePost(@PathVariable Long postId, @AuthenticationPrincipal String email) {
+        postService.addLikePost(postId, email);
+        return ApiData.response(PostResponseMessage.POST_LIKE_SUCCESS.getCode(),
+                PostResponseMessage.POST_LIKE_SUCCESS.getMessage());
+    }
+
+
 }

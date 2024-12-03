@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.image.dto.request.ImageDto;
-import project.MoongChee.domain.image.service.ImageService;
 import project.MoongChee.domain.image.service.S3ImageService;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
@@ -19,9 +18,11 @@ import project.MoongChee.domain.post.entity.PostKeyword;
 import project.MoongChee.domain.post.entity.PostStatus;
 import project.MoongChee.domain.post.exception.KeywordNotFoundException;
 import project.MoongChee.domain.post.exception.NameNotFoundException;
+import project.MoongChee.domain.post.exception.PostAlreadyLikedException;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.repository.PostRepository;
 import project.MoongChee.domain.user.domain.User;
+import project.MoongChee.domain.user.repository.UserRepository;
 import project.MoongChee.domain.user.service.UserService;
 
 @Service
@@ -29,8 +30,8 @@ import project.MoongChee.domain.user.service.UserService;
 public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
-    private final ImageService imageService;
     private final S3ImageService s3ImageService;
+    private final UserRepository userRepository;
 
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO requestDTO, List<MultipartFile> productImages, String email)
@@ -84,12 +85,6 @@ public class PostService {
         return PostResponseDTO.from(post);
     }
 
-    /*@Transactional//게시물 전체 조회
-    public Page<PostResponseDTO> getAllPosts(Pageable pageable) {
-        Page<Post> posts = postRepository.findAll(pageable);
-        return posts.map(PostResponseDTO::from);
-    }*/
-
     @Transactional//리스트를 통한 게시물 전체 조회 기능 구현
     public List<PostResponseDTO> getAllPosts() {
         List<Post> postPage = postRepository.findByPostStatusNot(PostStatus.CLOSED)
@@ -130,4 +125,19 @@ public class PostService {
                 .map(PostResponseDTO::from)
                 .collect(Collectors.toList());
     }
+
+    @Transactional//관심 게시물 등록
+    public void addLikePost(Long postId, String email) {
+        User user = userService.find(email);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        if (user.getLikes().contains(post)) {
+            throw new PostAlreadyLikedException();
+        }
+        user.addLike(post);
+        userRepository.save(user);
+    }
+
+
 }

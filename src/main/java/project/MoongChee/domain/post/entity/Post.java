@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -70,6 +71,9 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "rental_price")
     private Integer rentalPrice;
+
+    @ManyToMany(mappedBy = "likes")
+    private List<User> likeUsers = new ArrayList<>();
 
     public void addImage(Image image) {
         this.productImages.add(image);

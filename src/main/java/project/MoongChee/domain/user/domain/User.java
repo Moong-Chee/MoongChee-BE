@@ -7,15 +7,21 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.MoongChee.domain.image.domain.Image;
+import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.global.common.domain.BaseTimeEntity;
 
@@ -53,6 +59,10 @@ public class User extends BaseTimeEntity {
 
     private long studentNumber;
 
+    @ManyToMany
+    @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private List<Post> likes = new ArrayList<>();
+
     public void initProfile(UserInitializeRequest dto, Image profileImage) {
         this.customId = dto.customId();
         this.phoneNumber = dto.phoneNumber();
@@ -68,5 +78,15 @@ public class User extends BaseTimeEntity {
 
     public void changeActive(Status newStatus) {
         this.status = newStatus;
+    }
+
+    public void addLike(Post post) {
+        if (!likes.contains(post)) {
+            likes.add(post);
+        }
+    }
+
+    public void deleteLike(Post post) {
+        likes.remove(post);
     }
 }
