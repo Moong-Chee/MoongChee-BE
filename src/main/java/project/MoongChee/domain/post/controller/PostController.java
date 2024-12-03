@@ -84,7 +84,7 @@ public class PostController {
                 PostResponseMessage.POST_SEARCH_SUCCESS.getMessage(), postPage);
     }
 
-    @PostMapping("/like/{postId}")
+    @PostMapping("/like/{postId}")//관심 게시물 등록
     @Operation(summary = "게시물 관심 등록")
     public ApiData<Void> addLikePost(@PathVariable Long postId, @AuthenticationPrincipal String email) {
         postService.addLikePost(postId, email);
@@ -92,11 +92,19 @@ public class PostController {
                 PostResponseMessage.POST_LIKE_SUCCESS.getMessage());
     }
 
-    @DeleteMapping("/like/{postId}")
+    @DeleteMapping("/like/{postId}")//관심 게시물 등록 해제
     @Operation(summary = "게시물 관심 등록 해제")
     public ApiData<Void> deleteLikePost(@PathVariable Long postId, @AuthenticationPrincipal String email) {
         postService.deleteLikePost(postId, email);
         return ApiData.response(PostResponseMessage.POST_LIKE_REMOVE_SUCCESS.getCode(),
                 PostResponseMessage.POST_LIKE_REMOVE_SUCCESS.getMessage());
+    }
+
+    @GetMapping("like")//관심 게시물 조회
+    @Operation(summary = "관심 대여 게시물 조회")
+    public ApiData<List<PostResponseDTO>> getLikePosts(@AuthenticationPrincipal String email) {
+        List<PostResponseDTO> likes = postService.getLikePosts(email);
+        return ApiData.response(PostResponseMessage.POST_GETLIKE_SUCCESS.getCode(),
+                PostResponseMessage.POST_GETLIKE_SUCCESS.getMessage(), likes);
     }
 }
