@@ -92,7 +92,7 @@ public class PostService {
 
     @Transactional//리스트를 통한 게시물 전체 조회 기능 구현
     public List<PostResponseDTO> getAllPosts() {
-        List<Post> postPage = postRepository.findAll()
+        List<Post> postPage = postRepository.findByPostStatusNot(PostStatus.CLOSED)
                 .stream()
                 .collect(Collectors.toList());
 
