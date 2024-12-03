@@ -20,6 +20,7 @@ import project.MoongChee.domain.post.exception.KeywordNotFoundException;
 import project.MoongChee.domain.post.exception.NameNotFoundException;
 import project.MoongChee.domain.post.exception.PostAlreadyLikedException;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
+import project.MoongChee.domain.post.exception.PostNotLikedException;
 import project.MoongChee.domain.post.repository.PostRepository;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.repository.UserRepository;
@@ -136,6 +137,19 @@ public class PostService {
             throw new PostAlreadyLikedException();
         }
         user.addLike(post);
+        userRepository.save(user);
+    }
+
+    @Transactional//관심 게시물 삭제
+    public void deleteLikePost(Long postId, String email) {
+        User user = userService.find(email);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        if (!user.getLikes().contains(post)) {
+            throw new PostNotLikedException();
+        }
+        user.deleteLike(post);
         userRepository.save(user);
     }
 

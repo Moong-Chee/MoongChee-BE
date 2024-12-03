@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,5 +92,11 @@ public class PostController {
                 PostResponseMessage.POST_LIKE_SUCCESS.getMessage());
     }
 
-
+    @DeleteMapping("/like/{postId}")
+    @Operation(summary = "게시물 관심 등록 해제")
+    public ApiData<Void> deleteLikePost(@PathVariable Long postId, @AuthenticationPrincipal String email) {
+        postService.deleteLikePost(postId, email);
+        return ApiData.response(PostResponseMessage.POST_LIKE_REMOVE_SUCCESS.getCode(),
+                PostResponseMessage.POST_LIKE_REMOVE_SUCCESS.getMessage());
+    }
 }
