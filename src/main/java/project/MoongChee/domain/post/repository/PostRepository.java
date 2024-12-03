@@ -15,6 +15,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     //게시물 검색을 querydsl을 사용할지 jpql을 사용할지 고민하였는데 제가 querydsl에 아직 익숙하지 못해 jpql을 사용하였습니다.
     @Query("SELECT p FROM Post p WHERE " +
+            "p.postStatus!='CLOSED'AND" +
             "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
             "(:keyword IS NULL OR p.keyword = :keyword)")
     List<Post> searchPosts(@Param("name") String name, @Param("keyword") PostKeyword keyword);
