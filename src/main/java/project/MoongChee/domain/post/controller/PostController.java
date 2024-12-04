@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,16 +56,6 @@ public class PostController {
                 PostResponseMessage.POST_UPDATE_SUCCESS.getMessage(), response);
     }
 
-    //게시물 전체 조회
-    /*@GetMapping
-    @Operation(summary = "전체 게시물 조회")
-    public ApiData<Page<PostResponseDTO>> getAllPosts(@RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("createdAt").descending());
-        Page<PostResponseDTO> posts = postService.getAllPosts(pageable);
-        return ApiData.response(PostResponseMessage.POST_GETALL_SUCCESS.getCode(),
-                PostResponseMessage.POST_GETALL_SUCCESS.getMessage(), posts);
-    }*/
-
     @GetMapping//리스트를 통한 구현. 피그마를 보니 페이지를 나누지 않고 스크롤을 통한 구현이 이루어졌기에 리스트를 통한 구현으로 수정하였습니다.
     @Operation(summary = "전체 게시물 조회")
     public ApiData<List<PostResponseDTO>> getAllPosts() {
@@ -91,5 +82,29 @@ public class PostController {
         List<PostResponseDTO> postPage = postService.searchPosts(name, keyword);
         return ApiData.response(PostResponseMessage.POST_SEARCH_SUCCESS.getCode(),
                 PostResponseMessage.POST_SEARCH_SUCCESS.getMessage(), postPage);
+    }
+
+    @PostMapping("/like/{postId}")//관심 게시물 등록
+    @Operation(summary = "게시물 관심 등록")
+    public ApiData<Void> addLikePost(@PathVariable Long postId, @AuthenticationPrincipal String email) {
+        postService.addLikePost(postId, email);
+        return ApiData.response(PostResponseMessage.POST_LIKE_SUCCESS.getCode(),
+                PostResponseMessage.POST_LIKE_SUCCESS.getMessage());
+    }
+
+    @DeleteMapping("/like/{postId}")//관심 게시물 등록 해제
+    @Operation(summary = "게시물 관심 등록 해제")
+    public ApiData<Void> deleteLikePost(@PathVariable Long postId, @AuthenticationPrincipal String email) {
+        postService.deleteLikePost(postId, email);
+        return ApiData.response(PostResponseMessage.POST_LIKE_REMOVE_SUCCESS.getCode(),
+                PostResponseMessage.POST_LIKE_REMOVE_SUCCESS.getMessage());
+    }
+
+    @GetMapping("like")//관심 게시물 조회
+    @Operation(summary = "관심 대여 게시물 조회")
+    public ApiData<List<PostResponseDTO>> getLikePosts(@AuthenticationPrincipal String email) {
+        List<PostResponseDTO> likes = postService.getLikePosts(email);
+        return ApiData.response(PostResponseMessage.POST_GETLIKE_SUCCESS.getCode(),
+                PostResponseMessage.POST_GETLIKE_SUCCESS.getMessage(), likes);
     }
 }
