@@ -17,7 +17,7 @@ import project.MoongChee.domain.review.entity.ReviewScore;
 public class ReviewResponseDTO {
     Long id;
     ReviewScore reviewScore;
-    String content;
+    String reviewContent;
     String reviewerName;
     String revieweeName;
     Long postId;
@@ -27,6 +27,7 @@ public class ReviewResponseDTO {
         return ReviewResponseDTO.builder()
                 .id(review.getId())
                 .reviewScore(review.getReviewScore())
+                .reviewContent(review.getContent())
                 .reviewerName(review.getReviewer().getName())
                 .revieweeName(review.getReviewee().getName())
                 .postId(review.getPost().getPostId())
