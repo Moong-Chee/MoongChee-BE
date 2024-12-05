@@ -1,5 +1,7 @@
 package project.MoongChee.domain.review.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,11 @@ public class ReviewService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
+        /* // 사용자가 자신의 게시물에 리뷰를 남기는지 확인. 근데 리뷰 작성을 대여자만 작성하는지 대여를 해준 사람도 작성하는건지 확실하지 않아서 일단 주석처리
+        if(post.getAuthor().equals(reviewer)) {
+            throw new UnauthorizedReviewerException();
+        }*/
+
         User reviewee = post.getAuthor();
 
         Review review = Review.builder()
@@ -38,5 +45,14 @@ public class ReviewService {
                 .build();
         reviewRepository.save(review);
         return ReviewResponseDTO.from(review);
+    }
+
+    @Transactional
+    public List<ReviewResponseDTO> getMyReviews(String email) {
+        User reviewee = userService.find(email);
+        List<Review> reviews = reviewRepository.findByReviewee(reviewee);
+        return reviews.stream()
+                .map(ReviewResponseDTO::from)
+                .collect(Collectors.toList());
     }
 }

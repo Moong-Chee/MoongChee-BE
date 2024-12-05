@@ -153,7 +153,7 @@ public class PostService {
         userRepository.save(user);
     }
 
-    @Transactional//관심 게시물 등록
+    @Transactional//관심 게시물 조회
     public List<PostResponseDTO> getLikePosts(String email) {
         User user = userService.find(email);
         return user.getLikes().stream()
