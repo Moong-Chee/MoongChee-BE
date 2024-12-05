@@ -3,8 +3,10 @@ package project.MoongChee.domain.review.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import project.MoongChee.global.common.response.ApiData;
 @Tag(name = "Review", description = "리뷰 관련 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/review")
+@RequestMapping("/api/v1/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
 
@@ -30,5 +32,13 @@ public class ReviewController {
         ReviewResponseDTO responseDTO = reviewService.createReview(postId, requestDTO, email);
         return ApiData.response(ReviewResponseMessage.REVIEW_CREATE_SUCCESS.getCode(),
                 ReviewResponseMessage.REVIEW_CREATE_SUCCESS.getMessage(), responseDTO);
+    }
+
+    @GetMapping
+    @Operation(summary = "자신에게 작성된 리뷰 조회")
+    public ApiData<List<ReviewResponseDTO>> getMyReview(@AuthenticationPrincipal String email) {
+        List<ReviewResponseDTO> reviews = reviewService.getMyReviews(email);
+        return ApiData.response(ReviewResponseMessage.REVIEW_GET_SUCCESS.getCode(),
+                ReviewResponseMessage.REVIEW_GET_SUCCESS.getMessage(), reviews);
     }
 }
