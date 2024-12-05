@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import project.MoongChee.domain.chat.domain.ChatRoom;
 import project.MoongChee.domain.chat.dto.request.FindChatRoomRequestDto;
 import project.MoongChee.domain.chat.dto.response.ChatRoomResponseDto;
-import project.MoongChee.domain.chat.exception.NotFoundChatRoomException;
+import project.MoongChee.domain.chat.exception.ChatRoomNotFoundException;
 import project.MoongChee.domain.chat.redis.RedisListener;
 import project.MoongChee.domain.chat.repository.ChatRoomRepository;
 import project.MoongChee.domain.user.domain.User;
@@ -32,7 +32,7 @@ public class ChatRoomService {
 
     public ChatRoomResponseDto findUser1User2ChatRoom(Long user1Id, Long user2Id) {
         Long result = chatRoomRepository.findRoomIdByUserIds(user1Id, user2Id)
-                .orElseThrow(NotFoundChatRoomException::new);
+                .orElseThrow(ChatRoomNotFoundException::new);
         return new ChatRoomResponseDto(result);
     }
 }

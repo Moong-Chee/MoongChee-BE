@@ -11,7 +11,7 @@ import project.MoongChee.domain.chat.dto.response.ChatMessageResponseDto;
 import project.MoongChee.domain.chat.dto.response.ChattingDto;
 import project.MoongChee.domain.chat.dto.response.ChattingListResponseDto;
 import project.MoongChee.domain.chat.dto.response.LatestMessageDto;
-import project.MoongChee.domain.chat.exception.NotFoundChatRoomException;
+import project.MoongChee.domain.chat.exception.ChatRoomNotFoundException;
 import project.MoongChee.domain.chat.repository.ChatMessageRepository;
 import project.MoongChee.domain.chat.repository.ChatRoomRepository;
 import project.MoongChee.domain.user.domain.User;
@@ -58,12 +58,12 @@ public class ChattingService {
 
     private ChatRoom validateChatRoom(Long roomId) {
         return chatRoomRepository.findById(roomId)
-                .orElseThrow(NotFoundChatRoomException::new);
+                .orElseThrow(ChatRoomNotFoundException::new);
     }
 
     private List<ChatRoom> validateChatRommList(Long userId) {
         return chatRoomRepository.findRoomsByUserId(userId)
-                .orElseThrow(NotFoundChatRoomException::new);
+                .orElseThrow(ChatRoomNotFoundException::new);
     }
 
 }
