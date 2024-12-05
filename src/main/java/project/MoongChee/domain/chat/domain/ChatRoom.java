@@ -11,11 +11,13 @@ import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.global.common.domain.BaseTimeEntity;
 
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자 접근 레벨 PROTECTED
 @Entity
@@ -34,4 +36,13 @@ public class ChatRoom extends BaseTimeEntity {
     private User user2;
 
     private String lastMessage;
+
+    public static ChatRoom of(User user1, User user2) {
+
+        return ChatRoom.builder()
+                .user1(user1)
+                .user2(user2)
+                .lastMessage("")
+                .build();
+    }
 }
