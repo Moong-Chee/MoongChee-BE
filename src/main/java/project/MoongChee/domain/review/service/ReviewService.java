@@ -54,9 +54,18 @@ public class ReviewService {
         return ReviewResponseDTO.from(review);
     }
 
-    @Transactional
+    @Transactional//자기 자신의 리뷰 조회
     public List<ReviewResponseDTO> getMyReviews(String email) {
         User reviewee = userService.find(email);
+        List<Review> reviews = reviewRepository.findByReviewee(reviewee);
+        return reviews.stream()
+                .map(ReviewResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<ReviewResponseDTO> getReviews(Long userId) {
+        User reviewee = userService.find(userId);
         List<Review> reviews = reviewRepository.findByReviewee(reviewee);
         return reviews.stream()
                 .map(ReviewResponseDTO::from)
