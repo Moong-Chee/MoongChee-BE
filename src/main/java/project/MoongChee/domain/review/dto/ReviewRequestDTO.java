@@ -1,5 +1,6 @@
 package project.MoongChee.domain.review.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,10 @@ import project.MoongChee.domain.review.entity.ReviewScore;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewRequestDTO {
-    @NotNull ReviewScore reviewScore;
-    @NotNull String reviewContent;
+    @NotNull
+    ReviewScore reviewScore;
+
+    @NotBlank
+    String reviewContent;
 
 }
