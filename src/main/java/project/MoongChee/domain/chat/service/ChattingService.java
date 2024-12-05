@@ -28,7 +28,13 @@ public class ChattingService {
         User user2 = findRoom.getUser2();
 
         List<ChatMessageResponseDto> chatMessageList = generateChatRoomMessages(roomId, page, size);
-        return new ChattingDto(user1.getId(), user2.getId(), user1.getCustomId(), user2.getCustomId(), chatMessageList);
+        return new ChattingDto(
+                user1.getId(), user2.getId(),
+                user1.getCustomId(), user2.getCustomId(),
+                user1.getProfileImage(),
+                user2.getProfileImage(),
+                chatMessageList
+        );
     }
 
 
