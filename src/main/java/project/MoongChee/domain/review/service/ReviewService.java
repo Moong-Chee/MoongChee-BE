@@ -36,9 +36,7 @@ public class ReviewService {
             throw new UnauthorizedReviewerException();
         }*/
 
-        boolean alreadyExists = reviewRepository.existsByPostAndReviewer(post,
-                reviewer);//한명의 사용자는 하나의 게시물에 한번만 리뷰 작성 가능
-        if (alreadyExists) {
+        if (reviewRepository.existsByPostAndReviewer(post, reviewer)) {
             throw new DuplicateReviewException();
         }
 
