@@ -14,12 +14,16 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.global.common.domain.BaseTimeEntity;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "Review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
