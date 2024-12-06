@@ -8,8 +8,6 @@ import lombok.Getter;
 public enum PostErrorMessage {
     POST_NOT_FOUND(404, "없는 대여 게시물입니다."),
     POST_UNAUTHORIZED(403, "수정 권한이 없습니다."),
-    NAME_NOT_FOUND(404, "해당 이름을 가진 대여 게시물이 없습니다."),
-    KEYWORD_NOT_FOUND(404, "해당 키워드를 가진 대여 게시물이 없습니다."),
     POST_ALREADY_LIKED(404, "이미 관심 등록된 게시물입니다."),
     POST_NOT_LIKED(404, "관심 등록된 게시물이 아닙니다.");
 
