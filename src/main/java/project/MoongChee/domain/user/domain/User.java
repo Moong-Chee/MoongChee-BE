@@ -38,8 +38,6 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
-    private String customId;
-
     private String email;
 
     private String name;
@@ -64,7 +62,6 @@ public class User extends BaseTimeEntity {
     private List<Post> likes = new ArrayList<>();
 
     public void initProfile(UserInitializeRequest dto, Image profileImage) {
-        this.customId = dto.customId();
         this.phoneNumber = dto.phoneNumber();
         this.birthday = dto.birthday();
         this.studentNumber = dto.studentNumber();
