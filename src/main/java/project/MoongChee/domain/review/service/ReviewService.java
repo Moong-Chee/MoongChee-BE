@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.repository.PostRepository;
+import project.MoongChee.domain.review.dto.ReviewGetResponseDTO;
 import project.MoongChee.domain.review.dto.ReviewRequestDTO;
 import project.MoongChee.domain.review.dto.ReviewResponseDTO;
 import project.MoongChee.domain.review.entity.Review;
@@ -55,20 +56,32 @@ public class ReviewService {
     }
 
     @Transactional//자기 자신의 리뷰 조회
-    public List<ReviewResponseDTO> getMyReviews(String email) {
+    public ReviewGetResponseDTO getMyReviews(String email) {
         User reviewee = userService.find(email);
         List<Review> reviews = reviewRepository.findByReviewee(reviewee);
-        return reviews.stream()
+        List<ReviewResponseDTO> responseDTOS = reviews.stream()
                 .map(ReviewResponseDTO::from)
                 .collect(Collectors.toList());
+        int reviewCount = reviews.size();
+        double averageScore = reviews.stream()
+                .mapToInt(review -> review.getReviewScore().ordinal() + 1)
+                .average()
+                .orElse(0.0);
+        return new ReviewGetResponseDTO(reviewCount, averageScore, responseDTOS);
     }
 
-    @Transactional
-    public List<ReviewResponseDTO> getReviews(Long userId) {
+    @Transactional//특정사용자의 리뷰 조회
+    public ReviewGetResponseDTO getReviews(Long userId) {
         User reviewee = userService.find(userId);
         List<Review> reviews = reviewRepository.findByReviewee(reviewee);
-        return reviews.stream()
+        List<ReviewResponseDTO> responseDTOS = reviews.stream()
                 .map(ReviewResponseDTO::from)
                 .collect(Collectors.toList());
+        int reviewCount = reviews.size();
+        double averageScore = reviews.stream()
+                .mapToInt(review -> review.getReviewScore().ordinal() + 1)
+                .average()
+                .orElse(0.0);
+        return new ReviewGetResponseDTO(reviewCount, averageScore, responseDTOS);
     }
 }

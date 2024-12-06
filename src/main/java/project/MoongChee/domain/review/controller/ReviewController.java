@@ -3,7 +3,6 @@ package project.MoongChee.domain.review.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import project.MoongChee.domain.review.dto.ReviewGetResponseDTO;
 import project.MoongChee.domain.review.dto.ReviewRequestDTO;
 import project.MoongChee.domain.review.dto.ReviewResponseDTO;
 import project.MoongChee.domain.review.service.ReviewService;
@@ -36,16 +36,16 @@ public class ReviewController {
 
     @GetMapping("/user")
     @Operation(summary = "자신에게 작성된 리뷰 조회")
-    public ApiData<List<ReviewResponseDTO>> getMyReviews(@AuthenticationPrincipal String email) {
-        List<ReviewResponseDTO> reviews = reviewService.getMyReviews(email);
+    public ApiData<ReviewGetResponseDTO> getMyReviews(@AuthenticationPrincipal String email) {
+        ReviewGetResponseDTO reviews = reviewService.getMyReviews(email);
         return ApiData.response(ReviewResponseMessage.REVIEW_GET_SUCCESS.getCode(),
                 ReviewResponseMessage.REVIEW_GET_SUCCESS.getMessage(), reviews);
     }
 
     @GetMapping("/user/{userId}")
     @Operation(summary = "특정 사용자의 리뷰 조회")
-    public ApiData<List<ReviewResponseDTO>> getReviews(@PathVariable Long userId) {
-        List<ReviewResponseDTO> reviews = reviewService.getReviews(userId);
+    public ApiData<ReviewGetResponseDTO> getReviews(@PathVariable Long userId) {
+        ReviewGetResponseDTO reviews = reviewService.getReviews(userId);
         return ApiData.response(ReviewResponseMessage.REVIEW_GET_SUCCESS.getCode(),
                 ReviewResponseMessage.REVIEW_GET_SUCCESS.getMessage(), reviews);
     }
