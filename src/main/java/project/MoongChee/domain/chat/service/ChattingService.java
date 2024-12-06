@@ -22,6 +22,7 @@ public class ChattingService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
 
+    // 채팅방 내역 조회
     public ChattingDto getChatRoom(Long roomId, Integer page, Integer size) {
         ChatRoom findRoom = validateChatRoom(roomId);
         User user1 = findRoom.getUser1();

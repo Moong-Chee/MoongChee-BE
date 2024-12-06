@@ -20,16 +20,17 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserService userService;
 
+    // 채팅방 생성
     public ChatRoomResponseDto saveChatRoom(FindChatRoomRequestDto findChatRoomRequestDto) {
         User user1 = userService.find(findChatRoomRequestDto.user1Id());
         User user2 = userService.find(findChatRoomRequestDto.user2Id());
 
-        ChatRoom savedRoom = chatRoomRepository.save(ChatRoom.of(user1, user2)); // 채팅방 RDB에 저장
-        redisMessageListener.adaptMessageListener(savedRoom.getId()); // 리스너 등록
+        ChatRoom savedRoom = chatRoomRepository.save(ChatRoom.of(user1, user2));
+        redisMessageListener.adaptMessageListener(savedRoom.getId());
         return new ChatRoomResponseDto(savedRoom.getId());
     }
 
-
+    // 유저 아이디로 채팅방 조회
     public ChatRoomResponseDto findUser1User2ChatRoom(Long user1Id, Long user2Id) {
         Long result = chatRoomRepository.findRoomIdByUserIds(user1Id, user2Id)
                 .orElseThrow(ChatRoomNotFoundException::new);
