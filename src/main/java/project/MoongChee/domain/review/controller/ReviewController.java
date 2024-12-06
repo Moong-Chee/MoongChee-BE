@@ -38,15 +38,15 @@ public class ReviewController {
     @Operation(summary = "자신에게 작성된 리뷰 조회")
     public ApiData<ReviewGetResponseDTO> getMyReviews(@AuthenticationPrincipal String email) {
         ReviewGetResponseDTO reviews = reviewService.getMyReviews(email);
-        return ApiData.response(ReviewResponseMessage.REVIEW_GET_SUCCESS.getCode(),
-                ReviewResponseMessage.REVIEW_GET_SUCCESS.getMessage(), reviews);
+        return ApiData.response(ReviewResponseMessage.MY_REVIEW_GET_SUCCESS.getCode(),
+                ReviewResponseMessage.MY_REVIEW_GET_SUCCESS.getMessage(), reviews);
     }
 
     @GetMapping("/user/{userId}")
     @Operation(summary = "특정 사용자의 리뷰 조회")
     public ApiData<ReviewGetResponseDTO> getReviews(@PathVariable Long userId) {
         ReviewGetResponseDTO reviews = reviewService.getReviews(userId);
-        return ApiData.response(ReviewResponseMessage.REVIEW_GET_SUCCESS.getCode(),
-                ReviewResponseMessage.REVIEW_GET_SUCCESS.getMessage(), reviews);
+        return ApiData.response(ReviewResponseMessage.OTHER_REVIEW_GET_SUCCESS.getCode(),
+                ReviewResponseMessage.OTHER_REVIEW_GET_SUCCESS.getMessage(), reviews);
     }
 }
