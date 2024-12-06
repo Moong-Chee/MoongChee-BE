@@ -17,6 +17,7 @@ import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.Status;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
+import project.MoongChee.domain.user.dto.response.MyProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
 import project.MoongChee.domain.user.exception.DuplicateCustomIdException;
@@ -106,14 +107,20 @@ public class UserService {
     /*
      * 구글 계정 기본 프로필 정보 반환
      */
-    public UserProfileResponse getProfile(String customId, String email) {
-        User user = userRepository.findByCustomId(customId)
+    public MyProfileResponse getMyProfile(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
         Department department = user.getDepartment();
         long studentNumber = user.getStudentNumber();
         LocalDate birthday = user.getBirthday();
 
-        return UserProfileResponse.from(user, department, studentNumber, birthday);
+        return MyProfileResponse.from(user, department, studentNumber, birthday);
+    }
+
+    public UserProfileResponse getUserProfile(String customId) {
+        User user = userRepository.findByCustomId(customId)
+                .orElseThrow(UserNotFoundException::new);
+        return UserProfileResponse.from(user);
     }
 
     /*
