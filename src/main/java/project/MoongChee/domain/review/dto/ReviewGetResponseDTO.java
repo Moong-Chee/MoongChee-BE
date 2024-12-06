@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewGetResponseDTO {
-    int reviewCount;
+    Integer reviewCount;
     Double averageScore;
     List<ReviewResponseDTO> reviews;
 }
