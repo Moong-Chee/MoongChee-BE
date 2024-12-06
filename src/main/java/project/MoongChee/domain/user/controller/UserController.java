@@ -53,7 +53,7 @@ public class UserController {
     public ApiData<String> initUserProfile(@RequestPart("request") @Valid UserInitializeRequest request,
                                            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
                                            @AuthenticationPrincipal @Parameter(hidden = true) String email)
-            throws IOException {// 스웨거에서 해당 정보 입력을 받지 않기 위해 hidden으로 설정
+            throws IOException {
         userService.initProfile(request, profileImage, email);
         return ApiData.response(INIT_PROFILE_SUCCESS.getCode(), INIT_PROFILE_SUCCESS.getMessage());
     }
