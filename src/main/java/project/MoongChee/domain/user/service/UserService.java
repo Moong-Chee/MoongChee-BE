@@ -66,11 +66,7 @@ public class UserService {
      */
     private UserSocialLoginResponse loginUser(String email) {
         User user = find(email);
-        String customId = null;
-        if (user.getCustomId() != null) {
-            customId = user.getCustomId();
-        }
-        return new UserSocialLoginResponse(user.getId(), LOGIN, customId, generateToken(email));
+        return new UserSocialLoginResponse(user.getId(), LOGIN, generateToken(email));
     }
 
     private UserSocialLoginResponse registerUser(GoogleUserInfoResponse userInfo) {
@@ -82,7 +78,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserSocialLoginResponse(user.getId(), REGISTER, null, generateToken(user.getEmail()));
+        return new UserSocialLoginResponse(user.getId(), REGISTER, generateToken(user.getEmail()));
     }
 
     /*
@@ -115,8 +111,8 @@ public class UserService {
         return MyProfileResponse.from(user, department, studentNumber, birthday);
     }
 
-    public UserProfileResponse getUserProfile(String customId) {
-        User user = userRepository.findByCustomId(customId)
+    public UserProfileResponse getUserProfile(Long userId) {
+        User user = userRepository.findIdById(userId)
                 .orElseThrow(UserNotFoundException::new);
         return UserProfileResponse.from(user);
     }
