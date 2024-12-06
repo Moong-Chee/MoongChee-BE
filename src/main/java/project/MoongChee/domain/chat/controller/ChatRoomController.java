@@ -35,9 +35,7 @@ public class ChatRoomController {
         ChatRoomResponseDto response = chatRoomService.saveChatRoom(findChatRoomRequestDto);
         return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), response);
     }
-
-
-    // user1Id와 user2Id의 채팅방이 있는 지 조회
+    
     @GetMapping("/{user1Id}/{user2Id}")
     @Operation(summary = "채팅방 존재 여부 조회")
     public ApiData<ChatRoomResponseDto> existChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
