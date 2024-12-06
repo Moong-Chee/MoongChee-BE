@@ -8,7 +8,7 @@ import project.MoongChee.domain.user.domain.User;
 @Builder
 public record MyProfileResponse(
         String name,
-        String customId,
+        String email,
         String profileImageUrl,
 
         String phoneNumber,
@@ -22,6 +22,7 @@ public record MyProfileResponse(
     public static MyProfileResponse from(User user, Department department, long studentNumber, LocalDate birthday) {
         return MyProfileResponse.builder()
                 .name(user.getName())
+                .email(user.getEmail())
                 .profileImageUrl(user.getProfileImage().getUrl())
                 .phoneNumber(user.getPhoneNumber())
                 .birthday(birthday)
