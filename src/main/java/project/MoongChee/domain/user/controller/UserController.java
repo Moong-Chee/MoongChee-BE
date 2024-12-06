@@ -65,13 +65,13 @@ public class UserController {
                 userService.getMyProfile(email));
     }
 
-    @GetMapping("/profile/{customId}")
+    @GetMapping("/profile/{userId}")
     @Operation(summary = "상대방 프로필 조회")
-    public ApiData<UserProfileResponse> getUserProfileByCustomId(@PathVariable String customId) {
+    public ApiData<UserProfileResponse> getUserProfileByCustomId(@PathVariable Long userId) {
         return ApiData.response(
                 USER_PROFILE_SUCCESS.getCode(),
                 USER_PROFILE_SUCCESS.getMessage(),
-                userService.getUserProfile(customId)
+                userService.getUserProfile(userId)
         );
     }
 }
