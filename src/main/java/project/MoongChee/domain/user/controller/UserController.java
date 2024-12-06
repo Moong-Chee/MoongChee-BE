@@ -1,8 +1,9 @@
 package project.MoongChee.domain.user.controller;
 
-import static project.MoongChee.domain.user.controller.ResponseMessage.GET_PROFILE_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.INIT_PROFILE_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.LOGIN_SUCCESS;
+import static project.MoongChee.domain.user.controller.ResponseMessage.MY_PROFILE_SUCCESS;
+import static project.MoongChee.domain.user.controller.ResponseMessage.USER_PROFILE_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.USER_SAVE_SUCCESS;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.user.domain.LoginStatus;
 import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.domain.user.dto.request.UserSocialLoginRequest;
+import project.MoongChee.domain.user.dto.response.MyProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
 import project.MoongChee.domain.user.service.UserService;
@@ -56,11 +58,20 @@ public class UserController {
         return ApiData.response(INIT_PROFILE_SUCCESS.getCode(), INIT_PROFILE_SUCCESS.getMessage());
     }
 
+    @GetMapping("/profile")
+    @Operation(summary = "내 프로필 조회")
+    public ApiData<MyProfileResponse> getMyProfile(@AuthenticationPrincipal @Parameter(hidden = true) String email) {
+        return ApiData.response(MY_PROFILE_SUCCESS.getCode(), MY_PROFILE_SUCCESS.getMessage(),
+                userService.getMyProfile(email));
+    }
+
     @GetMapping("/profile/{customId}")
-    @Operation(summary = "유저 기본 프로필 조회")
-    public ApiData<UserProfileResponse> getUserProfile(@PathVariable String customId,
-                                                       @AuthenticationPrincipal @Parameter(hidden = true) String email) {
-        return ApiData.response(GET_PROFILE_SUCCESS.getCode(), GET_PROFILE_SUCCESS.getMessage(),
-                userService.getProfile(customId, email));
+    @Operation(summary = "상대방 프로필 조회")
+    public ApiData<UserProfileResponse> getUserProfileByCustomId(@PathVariable String customId) {
+        return ApiData.response(
+                USER_PROFILE_SUCCESS.getCode(),
+                USER_PROFILE_SUCCESS.getMessage(),
+                userService.getUserProfile(customId)
+        );
     }
 }
