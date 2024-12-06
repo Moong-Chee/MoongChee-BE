@@ -8,7 +8,6 @@ import project.MoongChee.global.auth.jwt.JwtResponse;
 public record UserSocialLoginResponse(
         Long id,
         LoginStatus status,
-        String customId,
         JwtResponse jwtToken
 ) {
 }
