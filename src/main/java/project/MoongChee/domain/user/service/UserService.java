@@ -20,7 +20,6 @@ import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.domain.user.dto.response.MyProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
 import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
-import project.MoongChee.domain.user.exception.DuplicateCustomIdException;
 import project.MoongChee.domain.user.exception.InvalidEmailException;
 import project.MoongChee.domain.user.exception.UserNotFoundException;
 import project.MoongChee.domain.user.repository.UserRepository;
@@ -51,7 +50,7 @@ public class UserService {
 
         // 이메일 도메인 검증
         if (!email.endsWith("@gachon.ac.kr")) {
-            throw new InvalidEmailException(); // 또는 Custom 예외 사용
+            throw new InvalidEmailException(); // 이메일 도메인이 gachon.ac.kr이 아닌 경우
         }
 
         // 가입된 유저라면 로그인
@@ -93,14 +92,13 @@ public class UserService {
     public void initProfile(UserInitializeRequest dto, MultipartFile profileImage, String email) throws IOException {
         User user = find(email);
         Image savedImage = user.getProfileImage();
-        // 이미지가 없다면 새로 생성해서 저장
+
         if (savedImage == null) {
             savedImage = imageService.save(profileImage, user);
         } else if (profileImage != null) {
             ImageDto imageDto = imageService.getImage(profileImage);
             savedImage.update(imageDto);
         }
-        valid(dto.customId());
         user.initProfile(dto, savedImage);
     }
 
@@ -136,11 +134,6 @@ public class UserService {
     /*
      * userRepository 관련
      */
-    private void valid(String customId) {
-        if (userRepository.existsByCustomId(customId)) {
-            throw new DuplicateCustomIdException();
-        }
-    }
 
     public User find(String email) {
         return userRepository.findByEmail(email)
