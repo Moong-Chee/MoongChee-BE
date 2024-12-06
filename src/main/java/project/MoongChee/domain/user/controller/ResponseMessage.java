@@ -12,7 +12,7 @@ public enum ResponseMessage {
     // 프로필 관련
     INIT_PROFILE_SUCCESS(200, "프로필 초기설정에 성공했습니다."),
     MY_PROFILE_SUCCESS(200, "나의 기본 프로필 조회에 성공했습니다."),
-    USER_PROFILE_SUCCESS(200, "유저 기본 프로필 조회에 성공했습니다."),
+    USER_PROFILE_SUCCESS(200, "상대방 기본 프로필 조회에 성공했습니다."),
     // 어드민 관련
     USER_ACCEPT_SUCCESS(200, "유저 가입 승인에 성공했습니다.");
 
