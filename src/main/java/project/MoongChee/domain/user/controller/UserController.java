@@ -1,8 +1,9 @@
 package project.MoongChee.domain.user.controller;
 
-import static project.MoongChee.domain.user.controller.ResponseMessage.GET_PROFILE_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.INIT_PROFILE_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.LOGIN_SUCCESS;
+import static project.MoongChee.domain.user.controller.ResponseMessage.MY_PROFILE_SUCCESS;
+import static project.MoongChee.domain.user.controller.ResponseMessage.USER_PROFILE_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.USER_SAVE_SUCCESS;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,7 +61,7 @@ public class UserController {
     @GetMapping("/profile")
     @Operation(summary = "내 프로필 조회")
     public ApiData<MyProfileResponse> getMyProfile(@AuthenticationPrincipal @Parameter(hidden = true) String email) {
-        return ApiData.response(GET_PROFILE_SUCCESS.getCode(), GET_PROFILE_SUCCESS.getMessage(),
+        return ApiData.response(MY_PROFILE_SUCCESS.getCode(), MY_PROFILE_SUCCESS.getMessage(),
                 userService.getMyProfile(email));
     }
 
@@ -68,8 +69,8 @@ public class UserController {
     @Operation(summary = "상대방 프로필 조회")
     public ApiData<UserProfileResponse> getUserProfileByCustomId(@PathVariable String customId) {
         return ApiData.response(
-                GET_PROFILE_SUCCESS.getCode(),
-                GET_PROFILE_SUCCESS.getMessage(),
+                USER_PROFILE_SUCCESS.getCode(),
+                USER_PROFILE_SUCCESS.getMessage(),
                 userService.getUserProfile(customId)
         );
     }
