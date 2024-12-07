@@ -7,9 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import project.MoongChee.domain.chat.domain.ChatMessage;
 import project.MoongChee.domain.chat.domain.ChatRoom;
-import project.MoongChee.domain.chat.dto.response.ChatMessageResponseDto;
+import project.MoongChee.domain.chat.dto.response.ChatMessageResponse;
 import project.MoongChee.domain.chat.dto.response.ChattingDto;
-import project.MoongChee.domain.chat.dto.response.ChattingListResponseDto;
+import project.MoongChee.domain.chat.dto.response.ChattingListResponse;
 import project.MoongChee.domain.chat.dto.response.LatestMessageDto;
 import project.MoongChee.domain.chat.exception.ChatRoomNotFoundException;
 import project.MoongChee.domain.chat.repository.ChatMessageRepository;
@@ -28,7 +28,7 @@ public class ChattingService {
         User user1 = findRoom.getUser1();
         User user2 = findRoom.getUser2();
 
-        List<ChatMessageResponseDto> chatMessageList = generateChatRoomMessages(roomId, page, size);
+        List<ChatMessageResponse> chatMessageList = generateChatRoomMessages(roomId, page, size);
         return new ChattingDto(
                 user1.getId(), user2.getId(),
                 user1.getName(), user2.getName(),
@@ -38,7 +38,7 @@ public class ChattingService {
     }
 
 
-    public List<ChattingListResponseDto> getChattingList(Long userId) { // 추후 JWT 파싱으로 받아내기.
+    public List<ChattingListResponse> getChattingList(Long userId) { // 추후 JWT 파싱으로 받아내기.
         List<ChatRoom> chatRooms = validateChatRommList(userId);
 
         return chatRooms.stream()
@@ -47,17 +47,17 @@ public class ChattingService {
                             chatRoom.getId()).orElse(null);
                     LatestMessageDto latestMessageDto = (latestMessage != null)
                             ? LatestMessageDto.of(latestMessage) : new LatestMessageDto("", null);
-                    return ChattingListResponseDto.of(chatRoom, latestMessageDto);
+                    return ChattingListResponse.of(chatRoom, latestMessageDto);
                 })
                 .collect(Collectors.toList());
     }
 
-    private List<ChatMessageResponseDto> generateChatRoomMessages(Long roomId, Integer page, Integer size) {
+    private List<ChatMessageResponse> generateChatRoomMessages(Long roomId, Integer page, Integer size) {
         return chatMessageRepository.findByRoomIdOrderByCreatedAtDesc(
                         roomId, PageRequest.of(page - 1, size))
                 .getContent()
                 .stream()
-                .map(ChatMessageResponseDto::fromEntity)
+                .map(ChatMessageResponse::fromEntity)
                 .collect(Collectors.toList());
     }
 

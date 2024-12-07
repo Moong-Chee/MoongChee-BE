@@ -3,14 +3,14 @@ package project.MoongChee.domain.chat.dto.response;
 import java.time.LocalDateTime;
 import project.MoongChee.domain.chat.domain.ChatMessage;
 
-public record ChatMessageResponseDto(
+public record ChatMessageResponse(
         Long senderId,
         String senderName,
         String content,
         LocalDateTime createdAt
 ) {
-    public static ChatMessageResponseDto fromEntity(ChatMessage chatMessage) {
-        return new ChatMessageResponseDto(
+    public static ChatMessageResponse fromEntity(ChatMessage chatMessage) {
+        return new ChatMessageResponse(
                 chatMessage.getSenderId(),
                 chatMessage.getSenderName(),
                 chatMessage.getContent(),
