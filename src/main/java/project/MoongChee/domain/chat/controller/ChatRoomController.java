@@ -22,7 +22,7 @@ import project.MoongChee.global.common.response.ApiData;
 @Tag(name = "CHATROOM", description = "채팅방 컨트롤러")
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/chatRoom")
+@RequestMapping("/api/v1/chatRooms")
 @RequiredArgsConstructor
 public class ChatRoomController {
 

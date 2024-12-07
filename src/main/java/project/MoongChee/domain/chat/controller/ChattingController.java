@@ -18,7 +18,7 @@ import project.MoongChee.global.common.response.ApiData;
 
 @Tag(name = "CHAT", description = "채팅 컨트롤러")
 @RestController
-@RequestMapping("/api/v1/chat")
+@RequestMapping("/api/v1/chats")
 @RequiredArgsConstructor
 public class ChattingController {
     private final ChattingService chattingService;
