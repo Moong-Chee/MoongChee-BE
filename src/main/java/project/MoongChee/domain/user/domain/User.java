@@ -26,7 +26,6 @@ import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
 import project.MoongChee.global.common.domain.BaseTimeEntity;
 
 @Entity
-// mysql에서 user 테이블이 존재 하기 때문에 다른 이름으로 지정
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
