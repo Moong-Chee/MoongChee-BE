@@ -31,8 +31,8 @@ public class ChatRoomController {
     @PostMapping
     @Operation(summary = "채팅방 생성")
     public ApiData<ChatRoomResponseDto> createChatRoom(
-            @RequestBody @Valid CreateChatRoomRequestDto findChatRoomRequestDto) {
-        ChatRoomResponseDto response = chatRoomService.saveChatRoom(findChatRoomRequestDto);
+            @RequestBody @Valid CreateChatRoomRequestDto createChatRoomRequestDto) {
+        ChatRoomResponseDto response = chatRoomService.saveChatRoom(createChatRoomRequestDto);
         return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), response);
     }
 
