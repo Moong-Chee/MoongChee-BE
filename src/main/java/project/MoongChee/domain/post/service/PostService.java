@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.image.dto.request.ImageDto;
 import project.MoongChee.domain.image.service.S3ImageService;
+import project.MoongChee.domain.post.dto.PostGetDetailResponseDTO;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
@@ -20,6 +21,8 @@ import project.MoongChee.domain.post.exception.PostAlreadyLikedException;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.exception.PostNotLikedException;
 import project.MoongChee.domain.post.repository.PostRepository;
+import project.MoongChee.domain.review.dto.ReviewGetResponseDTO;
+import project.MoongChee.domain.review.service.ReviewService;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.repository.UserRepository;
 import project.MoongChee.domain.user.service.UserService;
@@ -31,6 +34,7 @@ public class PostService {
     private final UserService userService;
     private final S3ImageService s3ImageService;
     private final UserRepository userRepository;
+    private final ReviewService reviewService;
 
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO requestDTO, List<MultipartFile> productImages, String email)
@@ -96,10 +100,12 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDTO getPostById(Long postId) {
+    public PostGetDetailResponseDTO getPostById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        return PostResponseDTO.from(post);
+
+        ReviewGetResponseDTO ReviewResponseDTO = reviewService.getReviews(post.getAuthor().getId());
+        return PostGetDetailResponseDTO.from(post, ReviewResponseDTO);
     }
 
     @Transactional//리스트를 이용한 게시물 검색으로 수정

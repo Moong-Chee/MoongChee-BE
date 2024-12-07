@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import project.MoongChee.domain.post.dto.PostGetDetailResponseDTO;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
@@ -67,8 +68,8 @@ public class PostController {
     //게시물 하나 조회
     @GetMapping("/{postId}")
     @Operation(summary = "게시물 하나 조회")
-    public ApiData<PostResponseDTO> getPostById(@PathVariable Long postId) {
-        PostResponseDTO post = postService.getPostById(postId);
+    public ApiData<PostGetDetailResponseDTO> getPostById(@PathVariable Long postId) {
+        PostGetDetailResponseDTO post = postService.getPostById(postId);
         return ApiData.response(PostResponseMessage.POST_GETONE_SUCCESS.getCode(),
                 PostResponseMessage.POST_GETONE_SUCCESS.getMessage(), post);
     }
