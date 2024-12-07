@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.MoongChee.domain.chat.domain.ChatRoom;
-import project.MoongChee.domain.chat.dto.request.FindChatRoomRequestDto;
+import project.MoongChee.domain.chat.dto.request.CreateChatRoomRequestDto;
 import project.MoongChee.domain.chat.dto.response.ChatRoomResponseDto;
 import project.MoongChee.domain.chat.exception.ChatRoomNotFoundException;
 import project.MoongChee.domain.chat.redis.RedisListener;
@@ -21,7 +21,7 @@ public class ChatRoomService {
     private final UserService userService;
 
     // 채팅방 생성
-    public ChatRoomResponseDto saveChatRoom(FindChatRoomRequestDto findChatRoomRequestDto) {
+    public ChatRoomResponseDto saveChatRoom(CreateChatRoomRequestDto findChatRoomRequestDto) {
         User user1 = userService.find(findChatRoomRequestDto.user1Id());
         User user2 = userService.find(findChatRoomRequestDto.user2Id());
 

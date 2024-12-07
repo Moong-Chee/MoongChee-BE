@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.MoongChee.domain.chat.dto.request.FindChatRoomRequestDto;
+import project.MoongChee.domain.chat.dto.request.CreateChatRoomRequestDto;
 import project.MoongChee.domain.chat.dto.response.ChatRoomResponseDto;
 import project.MoongChee.domain.chat.service.ChatRoomService;
 import project.MoongChee.global.common.response.ApiData;
@@ -31,11 +31,11 @@ public class ChatRoomController {
     @PostMapping
     @Operation(summary = "채팅방 생성")
     public ApiData<ChatRoomResponseDto> createChatRoom(
-            @RequestBody @Valid FindChatRoomRequestDto findChatRoomRequestDto) {
+            @RequestBody @Valid CreateChatRoomRequestDto findChatRoomRequestDto) {
         ChatRoomResponseDto response = chatRoomService.saveChatRoom(findChatRoomRequestDto);
         return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), response);
     }
-    
+
     @GetMapping("/{user1Id}/{user2Id}")
     @Operation(summary = "채팅방 존재 여부 조회")
     public ApiData<ChatRoomResponseDto> existChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
