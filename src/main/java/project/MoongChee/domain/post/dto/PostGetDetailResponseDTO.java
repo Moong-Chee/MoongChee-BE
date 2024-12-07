@@ -26,6 +26,8 @@ public class PostGetDetailResponseDTO {
     @NotBlank
     private String authorName;
 
+    private String profileImageUrl;
+
     @NotBlank
     private String name;
 
@@ -57,9 +59,15 @@ public class PostGetDetailResponseDTO {
                 .map(Image::getUrl)
                 .collect(Collectors.toList());
 
+        String profileImageUrl = null;
+        if (post.getAuthor().getProfileImage() != null) {
+            profileImageUrl = post.getAuthor().getProfileImage().getUrl();
+        }
+
         return PostGetDetailResponseDTO.builder()
                 .postId(post.getPostId())
                 .authorName(post.getAuthor().getName())
+                .profileImageUrl(profileImageUrl)
                 .name(post.getName())
                 .productImageUrls(productImageUrls)
                 .productContent(post.getProductContent())
