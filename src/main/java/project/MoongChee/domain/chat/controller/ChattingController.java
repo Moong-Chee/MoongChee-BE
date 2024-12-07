@@ -1,7 +1,7 @@
 package project.MoongChee.domain.chat.controller;
 
-import static project.MoongChee.domain.chat.controller.ResponseMessage.CHATROOM_GET;
-import static project.MoongChee.domain.chat.controller.ResponseMessage.CHATTING_LIST_GET;
+import static project.MoongChee.domain.chat.controller.ResponseMessage.CHATROOM_GET_SUCCESS;
+import static project.MoongChee.domain.chat.controller.ResponseMessage.CHATTINGLIST_GET_SUCCESS;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,13 +28,13 @@ public class ChattingController {
     public ApiData<ChattingDto> findChatting(@PathVariable Long roomId, @PathVariable Integer page,
                                              @PathVariable Integer size) {
         ChattingDto response = chattingService.getChatRoom(roomId, page, size);
-        return ApiData.response(CHATROOM_GET.getCode(), CHATROOM_GET.getMessage(), response);
+        return ApiData.response(CHATROOM_GET_SUCCESS.getCode(), CHATROOM_GET_SUCCESS.getMessage(), response);
     }
 
     @GetMapping("/chattingList/{userId}")
     @Operation(summary = "특정 유저 모든 채팅방 목록 조회")
     public ApiData<List<ChattingListResponse>> findChattingList(@PathVariable Long userId) {
         List<ChattingListResponse> response = chattingService.getChattingList(userId);
-        return ApiData.response(CHATTING_LIST_GET.getCode(), CHATTING_LIST_GET.getMessage(), response);
+        return ApiData.response(CHATTINGLIST_GET_SUCCESS.getCode(), CHATTINGLIST_GET_SUCCESS.getMessage(), response);
     }
 }

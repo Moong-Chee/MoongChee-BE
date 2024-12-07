@@ -1,7 +1,7 @@
 package project.MoongChee.domain.chat.controller;
 
 import static project.MoongChee.domain.chat.controller.ResponseMessage.CHATROOM_CREATE_SUCCESS;
-import static project.MoongChee.domain.chat.controller.ResponseMessage.ROOMID_GET;
+import static project.MoongChee.domain.chat.controller.ResponseMessage.ROOMID_GET_SUCCESS;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,6 +41,6 @@ public class ChatRoomController {
     public ApiData<ChatRoomResponse> existChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
         ChatRoomResponse response = chatRoomService.findUser1User2ChatRoom(user1Id, user2Id);
 
-        return ApiData.response(ROOMID_GET.getCode(), ROOMID_GET.getMessage(), response);
+        return ApiData.response(ROOMID_GET_SUCCESS.getCode(), ROOMID_GET_SUCCESS.getMessage(), response);
     }
 }
