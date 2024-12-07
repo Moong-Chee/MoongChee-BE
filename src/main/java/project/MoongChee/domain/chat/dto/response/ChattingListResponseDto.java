@@ -19,7 +19,7 @@ public record ChattingListResponseDto(
                 chatRoom.getUser1().getId(),
                 chatRoom.getUser2().getId(),
                 chatRoom.getUser1().getName(),
-                chatRoom.getUser1().getName(),
+                chatRoom.getUser2().getName(),
                 chatRoom.getUser1().getProfileImage(),
                 chatRoom.getUser2().getProfileImage(),
                 latestMessageDto
