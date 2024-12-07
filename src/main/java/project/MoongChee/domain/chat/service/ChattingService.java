@@ -23,7 +23,7 @@ public class ChattingService {
     private final ChatMessageRepository chatMessageRepository;
 
     // 채팅방 내역 조회
-    public ChattingDto getChatRoom(Long roomId, Integer page, Integer size) {
+    public ChattingDto findChatMessages(Long roomId, Integer page, Integer size) {
         ChatRoom findRoom = validateChatRoom(roomId);
         User user1 = findRoom.getUser1();
         User user2 = findRoom.getUser2();
@@ -37,8 +37,8 @@ public class ChattingService {
         );
     }
 
-
-    public List<ChattingListResponse> getChattingList(Long userId) {
+    // 채팅방 리스트 조회
+    public List<ChattingListResponse> findUserChatRooms(Long userId) {
         List<ChatRoom> chatRooms = validateChatRommList(userId);
 
         return chatRooms.stream()

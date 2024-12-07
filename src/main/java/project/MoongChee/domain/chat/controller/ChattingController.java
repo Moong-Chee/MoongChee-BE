@@ -27,14 +27,14 @@ public class ChattingController {
     @Operation(summary = "단일 채팅방 + 대화 내역 조회")
     public ApiData<ChattingDto> findChatting(@PathVariable Long roomId, @PathVariable Integer page,
                                              @PathVariable Integer size) {
-        ChattingDto response = chattingService.getChatRoom(roomId, page, size);
+        ChattingDto response = chattingService.findChatMessages(roomId, page, size);
         return ApiData.response(CHATROOM_GET_SUCCESS.getCode(), CHATROOM_GET_SUCCESS.getMessage(), response);
     }
 
     @GetMapping("/chattingList/{userId}")
     @Operation(summary = "특정 유저 모든 채팅방 목록 조회")
     public ApiData<List<ChattingListResponse>> findChattingList(@PathVariable Long userId) {
-        List<ChattingListResponse> response = chattingService.getChattingList(userId);
+        List<ChattingListResponse> response = chattingService.findUserChatRooms(userId);
         return ApiData.response(CHATTINGLIST_GET_SUCCESS.getCode(), CHATTINGLIST_GET_SUCCESS.getMessage(), response);
     }
 }

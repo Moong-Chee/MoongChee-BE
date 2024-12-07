@@ -32,14 +32,14 @@ public class ChatRoomController {
     @Operation(summary = "채팅방 생성")
     public ApiData<ChatRoomResponse> createChatRoom(
             @RequestBody @Valid CreateChatRoomRequest createChatRoomRequest) {
-        ChatRoomResponse response = chatRoomService.saveChatRoom(createChatRoomRequest);
+        ChatRoomResponse response = chatRoomService.createChatRoom(createChatRoomRequest);
         return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), response);
     }
 
     @GetMapping("/{user1Id}/{user2Id}")
     @Operation(summary = "채팅방 존재 여부 조회")
     public ApiData<ChatRoomResponse> findChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
-        ChatRoomResponse response = chatRoomService.findUser1User2ChatRoom(user1Id, user2Id);
+        ChatRoomResponse response = chatRoomService.findChatRoomByUserIds(user1Id, user2Id);
 
         return ApiData.response(ROOMID_GET_SUCCESS.getCode(), ROOMID_GET_SUCCESS.getMessage(), response);
     }
