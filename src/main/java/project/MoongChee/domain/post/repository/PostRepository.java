@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.post.entity.PostKeyword;
 import project.MoongChee.domain.post.entity.PostStatus;
+import project.MoongChee.domain.post.entity.TradeType;
 import project.MoongChee.domain.user.domain.User;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -17,8 +18,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE " +
             "p.postStatus!='CLOSED'AND" +
             "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-            "(:keyword IS NULL OR p.keyword = :keyword)")
-    List<Post> searchPosts(@Param("name") String name, @Param("keyword") PostKeyword keyword);
+            "(:keyword IS NULL OR p.keyword = :keyword) AND" +
+            ":tradeType IS NULL OR p.tradeType=:tradeType")
+    List<Post> searchPosts(@Param("name") String name, @Param("keyword") PostKeyword keyword,
+                           @Param("tradeType") TradeType tradeType);
 
     List<Post> findByPostStatusNot(PostStatus status);
 }

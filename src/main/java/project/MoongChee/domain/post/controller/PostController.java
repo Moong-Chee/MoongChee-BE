@@ -24,6 +24,7 @@ import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
 import project.MoongChee.domain.post.entity.PostKeyword;
+import project.MoongChee.domain.post.entity.TradeType;
 import project.MoongChee.domain.post.service.PostService;
 import project.MoongChee.global.common.response.ApiData;
 
@@ -79,8 +80,9 @@ public class PostController {
     public ApiData<List<PostResponseDTO>> searchPosts(
             @RequestParam(required = false) @Parameter(description = "이름") String name,
             @RequestParam(required = false) @Parameter(description = "키워드")
-            PostKeyword keyword) {
-        List<PostResponseDTO> postPage = postService.searchPosts(name, keyword);
+            PostKeyword keyword,
+            @RequestParam(required = false) @Parameter(description = "거래 유형") TradeType tradeType) {
+        List<PostResponseDTO> postPage = postService.searchPosts(name, keyword, tradeType);
         return ApiData.response(PostResponseMessage.POST_SEARCH_SUCCESS.getCode(),
                 PostResponseMessage.POST_SEARCH_SUCCESS.getMessage(), postPage);
     }

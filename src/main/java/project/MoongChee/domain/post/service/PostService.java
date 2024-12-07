@@ -17,6 +17,7 @@ import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
 import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.post.entity.PostKeyword;
 import project.MoongChee.domain.post.entity.PostStatus;
+import project.MoongChee.domain.post.entity.TradeType;
 import project.MoongChee.domain.post.exception.PostAlreadyLikedException;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.exception.PostNotLikedException;
@@ -108,8 +109,8 @@ public class PostService {
     }
 
     @Transactional//리스트를 이용한 게시물 검색으로 수정
-    public List<PostResponseDTO> searchPosts(String name, PostKeyword keyword) {
-        List<Post> searchPosts = postRepository.searchPosts(name, keyword)
+    public List<PostResponseDTO> searchPosts(String name, PostKeyword keyword, TradeType tradeType) {
+        List<Post> searchPosts = postRepository.searchPosts(name, keyword, tradeType)
                 .stream()
                 .collect(Collectors.toList());
 
