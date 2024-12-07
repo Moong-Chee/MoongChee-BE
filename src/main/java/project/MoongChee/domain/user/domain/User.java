@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.post.entity.Post;
-import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
+import project.MoongChee.domain.user.dto.request.InitRequest;
 import project.MoongChee.global.common.domain.BaseTimeEntity;
 
 @Entity
@@ -60,7 +60,7 @@ public class User extends BaseTimeEntity {
     @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
     private List<Post> likes = new ArrayList<>();
 
-    public void initProfile(UserInitializeRequest dto, Image profileImage) {
+    public void initProfile(InitRequest dto, Image profileImage) {
         this.phoneNumber = dto.phoneNumber();
         this.birthday = dto.birthday();
         this.studentNumber = dto.studentNumber();

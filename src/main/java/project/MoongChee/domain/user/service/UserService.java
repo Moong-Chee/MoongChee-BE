@@ -16,10 +16,10 @@ import project.MoongChee.domain.image.service.ImageService;
 import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.Status;
 import project.MoongChee.domain.user.domain.User;
-import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
+import project.MoongChee.domain.user.dto.request.InitRequest;
 import project.MoongChee.domain.user.dto.response.MyProfileResponse;
+import project.MoongChee.domain.user.dto.response.SocialLoginResponse;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
-import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
 import project.MoongChee.domain.user.exception.InvalidEmailException;
 import project.MoongChee.domain.user.exception.UserNotFoundException;
 import project.MoongChee.domain.user.repository.UserRepository;
@@ -42,7 +42,7 @@ public class UserService {
      * 인증 관련
      */
     @Transactional
-    public UserSocialLoginResponse authenticate(String authCode) {
+    public SocialLoginResponse authenticate(String authCode) {
         GoogleTokenResponse token = authService.getGoogleAccessToken(authCode);
         GoogleUserInfoResponse userInfo = authService.getGoogleUserInfo(token.access_token());
 
@@ -64,12 +64,12 @@ public class UserService {
     /*
      * 로그인, 회원가입 관련
      */
-    private UserSocialLoginResponse loginUser(String email) {
+    private SocialLoginResponse loginUser(String email) {
         User user = find(email);
-        return new UserSocialLoginResponse(user.getId(), LOGIN, generateToken(email));
+        return new SocialLoginResponse(user.getId(), LOGIN, generateToken(email));
     }
 
-    private UserSocialLoginResponse registerUser(GoogleUserInfoResponse userInfo) {
+    private SocialLoginResponse registerUser(GoogleUserInfoResponse userInfo) {
         User user = User.builder()
                 .name(userInfo.name())
                 .email(userInfo.email())
@@ -78,14 +78,14 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserSocialLoginResponse(user.getId(), REGISTER, generateToken(user.getEmail()));
+        return new SocialLoginResponse(user.getId(), REGISTER, generateToken(user.getEmail()));
     }
 
     /*
      * 회원가입 시 초기 정보 입력
      */
     @Transactional
-    public void initProfile(UserInitializeRequest dto, MultipartFile profileImage, String email) throws IOException {
+    public void initProfile(InitRequest dto, MultipartFile profileImage, String email) throws IOException {
         User user = find(email);
         Image savedImage = user.getProfileImage();
 

@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.user.domain.LoginStatus;
-import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
-import project.MoongChee.domain.user.dto.request.UserSocialLoginRequest;
+import project.MoongChee.domain.user.dto.request.InitRequest;
+import project.MoongChee.domain.user.dto.request.SocialLoginRequest;
 import project.MoongChee.domain.user.dto.response.MyProfileResponse;
+import project.MoongChee.domain.user.dto.response.SocialLoginResponse;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
-import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
 import project.MoongChee.domain.user.service.UserService;
 import project.MoongChee.global.common.response.ApiData;
 
@@ -40,8 +40,8 @@ public class UserController {
 
     @PostMapping("/auth/google")
     @Operation(summary = "구글 소셜 회원가입 및 로그인")
-    public ApiData<UserSocialLoginResponse> socialLogin(@RequestBody @Valid UserSocialLoginRequest request) {
-        UserSocialLoginResponse response = userService.authenticate(request.authCode());
+    public ApiData<SocialLoginResponse> socialLogin(@RequestBody @Valid SocialLoginRequest request) {
+        SocialLoginResponse response = userService.authenticate(request.authCode());
         if (response.status() == LoginStatus.LOGIN) {
             return ApiData.response(LOGIN_SUCCESS.getCode(), LOGIN_SUCCESS.getMessage(), response);
         }
@@ -50,7 +50,7 @@ public class UserController {
 
     @PatchMapping("/init")
     @Operation(summary = "초기 기본정보 입력")
-    public ApiData<String> initUserProfile(@RequestPart("request") @Valid UserInitializeRequest request,
+    public ApiData<String> initUserProfile(@RequestPart("request") @Valid InitRequest request,
                                            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
                                            @AuthenticationPrincipal @Parameter(hidden = true) String email)
             throws IOException {
