@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import project.MoongChee.domain.post.dto.PostGetDetailResponseDTO;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
 import project.MoongChee.domain.post.entity.PostKeyword;
+import project.MoongChee.domain.post.entity.TradeType;
 import project.MoongChee.domain.post.service.PostService;
 import project.MoongChee.global.common.response.ApiData;
 
@@ -67,8 +69,8 @@ public class PostController {
     //게시물 하나 조회
     @GetMapping("/{postId}")
     @Operation(summary = "게시물 하나 조회")
-    public ApiData<PostResponseDTO> getPostById(@PathVariable Long postId) {
-        PostResponseDTO post = postService.getPostById(postId);
+    public ApiData<PostGetDetailResponseDTO> getPostById(@PathVariable Long postId) {
+        PostGetDetailResponseDTO post = postService.getPostById(postId);
         return ApiData.response(PostResponseMessage.POST_GETONE_SUCCESS.getCode(),
                 PostResponseMessage.POST_GETONE_SUCCESS.getMessage(), post);
     }
@@ -78,8 +80,9 @@ public class PostController {
     public ApiData<List<PostResponseDTO>> searchPosts(
             @RequestParam(required = false) @Parameter(description = "이름") String name,
             @RequestParam(required = false) @Parameter(description = "키워드")
-            PostKeyword keyword) {
-        List<PostResponseDTO> postPage = postService.searchPosts(name, keyword);
+            PostKeyword keyword,
+            @RequestParam(required = false) @Parameter(description = "거래 유형") TradeType tradeType) {
+        List<PostResponseDTO> postPage = postService.searchPosts(name, keyword, tradeType);
         return ApiData.response(PostResponseMessage.POST_SEARCH_SUCCESS.getCode(),
                 PostResponseMessage.POST_SEARCH_SUCCESS.getMessage(), postPage);
     }

@@ -10,16 +10,20 @@ import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.image.dto.request.ImageDto;
 import project.MoongChee.domain.image.service.S3ImageService;
+import project.MoongChee.domain.post.dto.PostGetDetailResponseDTO;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
 import project.MoongChee.domain.post.dto.PostUpdateRequestDTO;
 import project.MoongChee.domain.post.entity.Post;
 import project.MoongChee.domain.post.entity.PostKeyword;
 import project.MoongChee.domain.post.entity.PostStatus;
+import project.MoongChee.domain.post.entity.TradeType;
 import project.MoongChee.domain.post.exception.PostAlreadyLikedException;
 import project.MoongChee.domain.post.exception.PostNotFoundException;
 import project.MoongChee.domain.post.exception.PostNotLikedException;
 import project.MoongChee.domain.post.repository.PostRepository;
+import project.MoongChee.domain.review.dto.ReviewGetResponseDTO;
+import project.MoongChee.domain.review.service.ReviewService;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.repository.UserRepository;
 import project.MoongChee.domain.user.service.UserService;
@@ -31,6 +35,7 @@ public class PostService {
     private final UserService userService;
     private final S3ImageService s3ImageService;
     private final UserRepository userRepository;
+    private final ReviewService reviewService;
 
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO requestDTO, List<MultipartFile> productImages, String email)
@@ -38,10 +43,10 @@ public class PostService {
         User author = userService.find(email);//현재 로그인한 사용자 조회
         Post post = Post.builder()
                 .author(author)
+                .tradeType(requestDTO.getTradeType())
                 .name(requestDTO.getName())
                 .productContent(requestDTO.getProductContent())
                 .keyword(requestDTO.getKeyword())
-                .productStatus(requestDTO.getProductStatus())
                 .postStatus(PostStatus.ACTIVE)//기본값 ACTIVE
                 .returnDate(requestDTO.getReturnDate())
                 .rentalPrice(requestDTO.getRentalPrice())
@@ -67,7 +72,6 @@ public class PostService {
         post.setName(requestDTO.getName());
         post.setProductContent(requestDTO.getProductContent());
         post.setKeyword(requestDTO.getKeyword());
-        post.setProductStatus(requestDTO.getProductStatus());
         post.setPostStatus(requestDTO.getPostStatus());
         post.setReturnDate(requestDTO.getReturnDate());
         post.setRentalPrice(requestDTO.getRentalPrice());
@@ -96,15 +100,17 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDTO getPostById(Long postId) {
+    public PostGetDetailResponseDTO getPostById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        return PostResponseDTO.from(post);
+
+        ReviewGetResponseDTO ReviewResponseDTO = reviewService.getReviews(post.getAuthor().getId());
+        return PostGetDetailResponseDTO.from(post, ReviewResponseDTO);
     }
 
     @Transactional//리스트를 이용한 게시물 검색으로 수정
-    public List<PostResponseDTO> searchPosts(String name, PostKeyword keyword) {
-        List<Post> searchPosts = postRepository.searchPosts(name, keyword)
+    public List<PostResponseDTO> searchPosts(String name, PostKeyword keyword, TradeType tradeType) {
+        List<Post> searchPosts = postRepository.searchPosts(name, keyword, tradeType)
                 .stream()
                 .collect(Collectors.toList());
 

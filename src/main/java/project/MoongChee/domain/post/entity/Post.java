@@ -44,6 +44,10 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "trade_type")
+    private TradeType tradeType;
+
     @Column(name = "name")
     private String name;
 
@@ -57,9 +61,6 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "keyword")
     private PostKeyword keyword;
-
-    @Column(name = "product_status")
-    private String productStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "post_status")

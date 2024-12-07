@@ -13,17 +13,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.post.entity.Post;
+import project.MoongChee.domain.review.dto.ReviewGetResponseDTO;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class PostResponseDTO {
+public class PostGetDetailResponseDTO {
     private Long postId;
 
     @NotBlank
     private String authorName;
+
+    private String profileImageUrl;
 
     @NotBlank
     private String tradeType;
@@ -50,14 +53,24 @@ public class PostResponseDTO {
 
     private LocalDateTime createdAt;
 
-    public static PostResponseDTO from(Post post) {
+    private Integer reviewCount;
+
+    private double averageScore;
+
+    public static PostGetDetailResponseDTO from(Post post, ReviewGetResponseDTO ReviewResponseDTO) {
         List<String> productImageUrls = post.getProductImages().stream()
                 .map(Image::getUrl)
                 .collect(Collectors.toList());
 
-        return PostResponseDTO.builder()
+        String profileImageUrl = null;
+        if (post.getAuthor().getProfileImage() != null) {
+            profileImageUrl = post.getAuthor().getProfileImage().getUrl();
+        }
+
+        return PostGetDetailResponseDTO.builder()
                 .postId(post.getPostId())
                 .authorName(post.getAuthor().getName())
+                .profileImageUrl(profileImageUrl)
                 .tradeType(post.getTradeType().name())
                 .name(post.getName())
                 .productImageUrls(productImageUrls)
@@ -67,6 +80,8 @@ public class PostResponseDTO {
                 .returnDate(post.getReturnDate())
                 .rentalPrice(post.getRentalPrice())
                 .createdAt(post.getCreatedAt())
+                .reviewCount(ReviewResponseDTO.getReviewCount())
+                .averageScore(ReviewResponseDTO.getAverageScore())
                 .build();
     }
 }
