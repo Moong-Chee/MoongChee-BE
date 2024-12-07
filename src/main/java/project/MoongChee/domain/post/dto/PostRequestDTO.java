@@ -8,12 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import project.MoongChee.domain.post.entity.PostKeyword;
+import project.MoongChee.domain.post.entity.TradeType;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostRequestDTO {
+    @NotNull
+    private TradeType tradeType;
+
     @NotBlank
     private String name;
 
@@ -22,9 +26,6 @@ public class PostRequestDTO {
 
     @NotNull
     private PostKeyword keyword;
-
-    @NotBlank
-    private String productStatus;
 
     @NotNull
     private LocalDate returnDate;

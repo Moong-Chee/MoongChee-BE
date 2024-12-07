@@ -26,6 +26,9 @@ public class PostResponseDTO {
     private String authorName;
 
     @NotBlank
+    private String tradeType;
+
+    @NotBlank
     private String name;
 
     private List<String> productImageUrls;
@@ -33,13 +36,10 @@ public class PostResponseDTO {
     @NotBlank
     private String productContent;
 
-    @NotBlank//PostRequestDTO에서 PostKeyword keyword로 설정하고 여기서는 String 타입으로 keyword를 설정해서 스웨거에서는 string으로 보일 것입니다.
+    @NotBlank
     private String keyword;
 
     @NotBlank
-    private String productStatus;
-
-    @NotBlank//PostRequestDTO에서 PostStatus postStatus로 설정하고 여기서는 String 타입으로 postStatus를 설정해서 스웨거에서는 string으로 보일 것입니다.
     private String postStatus;
 
     @NotNull
@@ -58,11 +58,11 @@ public class PostResponseDTO {
         return PostResponseDTO.builder()
                 .postId(post.getPostId())
                 .authorName(post.getAuthor().getName())
+                .tradeType(post.getTradeType().name())
                 .name(post.getName())
                 .productImageUrls(productImageUrls)
                 .productContent(post.getProductContent())
                 .keyword(post.getKeyword().name())
-                .productStatus(post.getProductStatus())
                 .postStatus(post.getPostStatus().name())
                 .returnDate(post.getReturnDate())
                 .rentalPrice(post.getRentalPrice())
