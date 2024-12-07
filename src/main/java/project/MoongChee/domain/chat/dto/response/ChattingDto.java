@@ -10,6 +10,6 @@ public record ChattingDto(
         String user2Name,
         Image user1ProfileImage,
         Image user2ProfileImage,
-        List<ChatMessageResponseDto> chatMessageList
+        List<ChatMessageResponse> chatMessageList
 ) {
 }

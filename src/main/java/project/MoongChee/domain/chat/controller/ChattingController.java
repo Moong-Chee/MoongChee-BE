@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.MoongChee.domain.chat.dto.response.ChattingDto;
-import project.MoongChee.domain.chat.dto.response.ChattingListResponseDto;
+import project.MoongChee.domain.chat.dto.response.ChattingListResponse;
 import project.MoongChee.domain.chat.service.ChattingService;
 import project.MoongChee.global.common.response.ApiData;
 
@@ -23,7 +23,6 @@ import project.MoongChee.global.common.response.ApiData;
 public class ChattingController {
     private final ChattingService chattingService;
 
-    // 채팅방 하나 조회 (대화 내역 반환)
     @GetMapping("/chatting/{roomId}/{page}/{size}")
     @Operation(summary = "단일 채팅방 + 대화 내역 조회")
     public ApiData<ChattingDto> findChatting(@PathVariable Long roomId, @PathVariable Integer page,
@@ -32,11 +31,10 @@ public class ChattingController {
         return ApiData.response(CHATROOM_GET.getCode(), CHATROOM_GET.getMessage(), response);
     }
 
-
     @GetMapping("/chattingList/{userId}")
     @Operation(summary = "특정 유저 모든 채팅방 목록 조회")
-    public ApiData<List<ChattingListResponseDto>> findChattingList(@PathVariable Long userId) {
-        List<ChattingListResponseDto> response = chattingService.getChattingList(userId);
+    public ApiData<List<ChattingListResponse>> findChattingList(@PathVariable Long userId) {
+        List<ChattingListResponse> response = chattingService.getChattingList(userId);
         return ApiData.response(CHATTING_LIST_GET.getCode(), CHATTING_LIST_GET.getMessage(), response);
     }
 }

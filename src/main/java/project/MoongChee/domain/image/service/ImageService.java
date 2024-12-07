@@ -25,9 +25,4 @@ public class ImageService {
     public ImageDto getImage(MultipartFile image) throws IOException {
         return s3ImageService.uploadImage(image);
     }
-
-    @Transactional
-    public void delete(Image profileImage) {
-        imageRepository.delete(profileImage);
-    }
 }

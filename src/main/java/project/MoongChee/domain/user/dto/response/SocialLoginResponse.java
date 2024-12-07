@@ -5,10 +5,9 @@ import project.MoongChee.domain.user.domain.LoginStatus;
 import project.MoongChee.global.auth.jwt.JwtResponse;
 
 @Builder
-public record UserSocialLoginResponse(
+public record SocialLoginResponse(
         Long id,
         LoginStatus status,
-        String customId,
         JwtResponse jwtToken
 ) {
 }

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.MoongChee.domain.chat.dto.request.FindChatRoomRequestDto;
-import project.MoongChee.domain.chat.dto.response.ChatRoomResponseDto;
+import project.MoongChee.domain.chat.dto.request.CreateChatRoomRequest;
+import project.MoongChee.domain.chat.dto.response.ChatRoomResponse;
 import project.MoongChee.domain.chat.service.ChatRoomService;
 import project.MoongChee.global.common.response.ApiData;
 
@@ -30,18 +30,16 @@ public class ChatRoomController {
 
     @PostMapping
     @Operation(summary = "채팅방 생성")
-    public ApiData<ChatRoomResponseDto> createChatRoom(
-            @RequestBody @Valid FindChatRoomRequestDto findChatRoomRequestDto) {
-        ChatRoomResponseDto response = chatRoomService.saveChatRoom(findChatRoomRequestDto);
+    public ApiData<ChatRoomResponse> createChatRoom(
+            @RequestBody @Valid CreateChatRoomRequest createChatRoomRequest) {
+        ChatRoomResponse response = chatRoomService.saveChatRoom(createChatRoomRequest);
         return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), response);
     }
 
-
-    // user1Id와 user2Id의 채팅방이 있는 지 조회
     @GetMapping("/{user1Id}/{user2Id}")
     @Operation(summary = "채팅방 존재 여부 조회")
-    public ApiData<ChatRoomResponseDto> existChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
-        ChatRoomResponseDto response = chatRoomService.findUser1User2ChatRoom(user1Id, user2Id);
+    public ApiData<ChatRoomResponse> existChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
+        ChatRoomResponse response = chatRoomService.findUser1User2ChatRoom(user1Id, user2Id);
 
         return ApiData.response(ROOMID_GET.getCode(), ROOMID_GET.getMessage(), response);
     }

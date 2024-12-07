@@ -1,6 +1,6 @@
 package project.MoongChee.domain.chat.dto.response;
 
-public record ChatRoomResponseDto(
+public record ChatRoomResponse(
         Long roomId
 ) {
 }

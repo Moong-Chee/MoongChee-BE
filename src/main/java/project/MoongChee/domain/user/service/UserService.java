@@ -16,11 +16,10 @@ import project.MoongChee.domain.image.service.ImageService;
 import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.Status;
 import project.MoongChee.domain.user.domain.User;
-import project.MoongChee.domain.user.dto.request.UserInitializeRequest;
+import project.MoongChee.domain.user.dto.request.InitRequest;
 import project.MoongChee.domain.user.dto.response.MyProfileResponse;
+import project.MoongChee.domain.user.dto.response.SocialLoginResponse;
 import project.MoongChee.domain.user.dto.response.UserProfileResponse;
-import project.MoongChee.domain.user.dto.response.UserSocialLoginResponse;
-import project.MoongChee.domain.user.exception.DuplicateCustomIdException;
 import project.MoongChee.domain.user.exception.InvalidEmailException;
 import project.MoongChee.domain.user.exception.UserNotFoundException;
 import project.MoongChee.domain.user.repository.UserRepository;
@@ -43,7 +42,7 @@ public class UserService {
      * 인증 관련
      */
     @Transactional
-    public UserSocialLoginResponse authenticate(String authCode) {
+    public SocialLoginResponse authenticate(String authCode) {
         GoogleTokenResponse token = authService.getGoogleAccessToken(authCode);
         GoogleUserInfoResponse userInfo = authService.getGoogleUserInfo(token.access_token());
 
@@ -51,7 +50,7 @@ public class UserService {
 
         // 이메일 도메인 검증
         if (!email.endsWith("@gachon.ac.kr")) {
-            throw new InvalidEmailException(); // 또는 Custom 예외 사용
+            throw new InvalidEmailException(); // 이메일 도메인이 gachon.ac.kr이 아닌 경우
         }
 
         // 가입된 유저라면 로그인
@@ -65,16 +64,12 @@ public class UserService {
     /*
      * 로그인, 회원가입 관련
      */
-    private UserSocialLoginResponse loginUser(String email) {
+    private SocialLoginResponse loginUser(String email) {
         User user = find(email);
-        String customId = null;
-        if (user.getCustomId() != null) {
-            customId = user.getCustomId();
-        }
-        return new UserSocialLoginResponse(user.getId(), LOGIN, customId, generateToken(email));
+        return new SocialLoginResponse(user.getId(), LOGIN, generateToken(email));
     }
 
-    private UserSocialLoginResponse registerUser(GoogleUserInfoResponse userInfo) {
+    private SocialLoginResponse registerUser(GoogleUserInfoResponse userInfo) {
         User user = User.builder()
                 .name(userInfo.name())
                 .email(userInfo.email())
@@ -83,24 +78,23 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserSocialLoginResponse(user.getId(), REGISTER, null, generateToken(user.getEmail()));
+        return new SocialLoginResponse(user.getId(), REGISTER, generateToken(user.getEmail()));
     }
 
     /*
      * 회원가입 시 초기 정보 입력
      */
     @Transactional
-    public void initProfile(UserInitializeRequest dto, MultipartFile profileImage, String email) throws IOException {
+    public void initProfile(InitRequest dto, MultipartFile profileImage, String email) throws IOException {
         User user = find(email);
         Image savedImage = user.getProfileImage();
-        // 이미지가 없다면 새로 생성해서 저장
+
         if (savedImage == null) {
             savedImage = imageService.save(profileImage, user);
         } else if (profileImage != null) {
             ImageDto imageDto = imageService.getImage(profileImage);
             savedImage.update(imageDto);
         }
-        valid(dto.customId());
         user.initProfile(dto, savedImage);
     }
 
@@ -117,8 +111,8 @@ public class UserService {
         return MyProfileResponse.from(user, department, studentNumber, birthday);
     }
 
-    public UserProfileResponse getUserProfile(String customId) {
-        User user = userRepository.findByCustomId(customId)
+    public UserProfileResponse getUserProfile(Long userId) {
+        User user = userRepository.findIdById(userId)
                 .orElseThrow(UserNotFoundException::new);
         return UserProfileResponse.from(user);
     }
@@ -136,11 +130,6 @@ public class UserService {
     /*
      * userRepository 관련
      */
-    private void valid(String customId) {
-        if (userRepository.existsByCustomId(customId)) {
-            throw new DuplicateCustomIdException();
-        }
-    }
 
     public User find(String email) {
         return userRepository.findByEmail(email)

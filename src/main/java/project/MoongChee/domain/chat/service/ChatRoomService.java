@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.MoongChee.domain.chat.domain.ChatRoom;
-import project.MoongChee.domain.chat.dto.request.FindChatRoomRequestDto;
-import project.MoongChee.domain.chat.dto.response.ChatRoomResponseDto;
+import project.MoongChee.domain.chat.dto.request.CreateChatRoomRequest;
+import project.MoongChee.domain.chat.dto.response.ChatRoomResponse;
 import project.MoongChee.domain.chat.exception.ChatRoomNotFoundException;
 import project.MoongChee.domain.chat.redis.RedisListener;
 import project.MoongChee.domain.chat.repository.ChatRoomRepository;
@@ -20,19 +20,20 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserService userService;
 
-    public ChatRoomResponseDto saveChatRoom(FindChatRoomRequestDto findChatRoomRequestDto) {
+    // 채팅방 생성
+    public ChatRoomResponse saveChatRoom(CreateChatRoomRequest findChatRoomRequestDto) {
         User user1 = userService.find(findChatRoomRequestDto.user1Id());
         User user2 = userService.find(findChatRoomRequestDto.user2Id());
 
-        ChatRoom savedRoom = chatRoomRepository.save(ChatRoom.of(user1, user2)); // 채팅방 RDB에 저장
-        redisMessageListener.adaptMessageListener(savedRoom.getId()); // 리스너 등록
-        return new ChatRoomResponseDto(savedRoom.getId());
+        ChatRoom savedRoom = chatRoomRepository.save(ChatRoom.of(user1, user2));
+        redisMessageListener.adaptMessageListener(savedRoom.getId());
+        return new ChatRoomResponse(savedRoom.getId());
     }
 
-
-    public ChatRoomResponseDto findUser1User2ChatRoom(Long user1Id, Long user2Id) {
+    // 유저 아이디로 채팅방 조회
+    public ChatRoomResponse findUser1User2ChatRoom(Long user1Id, Long user2Id) {
         Long result = chatRoomRepository.findRoomIdByUserIds(user1Id, user2Id)
                 .orElseThrow(ChatRoomNotFoundException::new);
-        return new ChatRoomResponseDto(result);
+        return new ChatRoomResponse(result);
     }
 }
