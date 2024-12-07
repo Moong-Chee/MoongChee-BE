@@ -42,10 +42,10 @@ public class PostService {
         User author = userService.find(email);//현재 로그인한 사용자 조회
         Post post = Post.builder()
                 .author(author)
+                .tradeType(requestDTO.getTradeType())
                 .name(requestDTO.getName())
                 .productContent(requestDTO.getProductContent())
                 .keyword(requestDTO.getKeyword())
-                .productStatus(requestDTO.getProductStatus())
                 .postStatus(PostStatus.ACTIVE)//기본값 ACTIVE
                 .returnDate(requestDTO.getReturnDate())
                 .rentalPrice(requestDTO.getRentalPrice())
@@ -71,7 +71,6 @@ public class PostService {
         post.setName(requestDTO.getName());
         post.setProductContent(requestDTO.getProductContent());
         post.setKeyword(requestDTO.getKeyword());
-        post.setProductStatus(requestDTO.getProductStatus());
         post.setPostStatus(requestDTO.getPostStatus());
         post.setReturnDate(requestDTO.getReturnDate());
         post.setRentalPrice(requestDTO.getRentalPrice());

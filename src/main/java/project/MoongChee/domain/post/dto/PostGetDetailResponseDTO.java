@@ -29,6 +29,9 @@ public class PostGetDetailResponseDTO {
     private String profileImageUrl;
 
     @NotBlank
+    private String tradeType;
+
+    @NotBlank
     private String name;
 
     private List<String> productImageUrls;
@@ -68,6 +71,7 @@ public class PostGetDetailResponseDTO {
                 .postId(post.getPostId())
                 .authorName(post.getAuthor().getName())
                 .profileImageUrl(profileImageUrl)
+                .tradeType(post.getTradeType().name())
                 .name(post.getName())
                 .productImageUrls(productImageUrls)
                 .productContent(post.getProductContent())
