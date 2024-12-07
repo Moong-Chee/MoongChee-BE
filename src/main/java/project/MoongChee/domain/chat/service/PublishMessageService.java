@@ -16,6 +16,7 @@ public class PublishMessageService {
     private final RedisPublisher redisPublisher;
     private final ChatMessageRepository chatMessageRepository;
 
+    // 메시지 발행(Pub)
     public void publishMessage(MessageDto messageDto) {
         PublishMessage publishMessage =
                 new PublishMessage(messageDto.getRoomId(), messageDto.getSenderId(), messageDto.getSenderName(),
