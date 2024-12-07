@@ -3,8 +3,8 @@ package project.MoongChee.domain.user.controller;
 import static project.MoongChee.domain.user.controller.ResponseMessage.INIT_PROFILE_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.LOGIN_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.MY_PROFILE_SUCCESS;
+import static project.MoongChee.domain.user.controller.ResponseMessage.REGISTER_SUCCESS;
 import static project.MoongChee.domain.user.controller.ResponseMessage.USER_PROFILE_SUCCESS;
-import static project.MoongChee.domain.user.controller.ResponseMessage.USER_SAVE_SUCCESS;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,7 +45,7 @@ public class UserController {
         if (response.status() == LoginStatus.LOGIN) {
             return ApiData.response(LOGIN_SUCCESS.getCode(), LOGIN_SUCCESS.getMessage(), response);
         }
-        return ApiData.response(USER_SAVE_SUCCESS.getCode(), USER_SAVE_SUCCESS.getMessage(), response);
+        return ApiData.response(REGISTER_SUCCESS.getCode(), REGISTER_SUCCESS.getMessage(), response);
     }
 
     @PatchMapping("/init")
