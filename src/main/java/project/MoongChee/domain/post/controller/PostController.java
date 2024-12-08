@@ -120,4 +120,12 @@ public class PostController {
                 PostResponseMessage.POST_MY_ACTIVE_SUCCESS.getMessage(), myActivePosts);
     }
 
+    @GetMapping("myClosed")//나의 게시물 중 종료된 거래 조회
+    @Operation(summary = "나의 게시물 중 종료된 거래 조회")
+    public ApiData<List<MyPostStatusResponseDTO>> getMyClosedPosts(@AuthenticationPrincipal String email) {
+        List<MyPostStatusResponseDTO> myClosedPosts = postService.getMyClosedPosts(email);
+        return ApiData.response(PostResponseMessage.POST_MY_CLOSED_SUCCESS.getCode(),
+                PostResponseMessage.POST_MY_CLOSED_SUCCESS.getMessage(), myClosedPosts);
+    }
+
 }

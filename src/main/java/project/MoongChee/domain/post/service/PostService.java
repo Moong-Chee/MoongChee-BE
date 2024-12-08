@@ -161,6 +161,14 @@ public class PostService {
         return myActivePosts.stream()
                 .map(MyPostStatusResponseDTO::from)
                 .collect(Collectors.toList());
+    }
 
+    @Transactional//종료된 거래 조회
+    public List<MyPostStatusResponseDTO> getMyClosedPosts(String email) {
+        User user = userService.find(email);
+        List<Post> myActivePosts = postRepository.findByAuthorAndPostStatus(user, PostStatus.CLOSED);
+        return myActivePosts.stream()
+                .map(MyPostStatusResponseDTO::from)
+                .collect(Collectors.toList());
     }
 }
