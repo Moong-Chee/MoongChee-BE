@@ -16,7 +16,7 @@ import project.MoongChee.domain.post.entity.Post;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MyPostStatusResponseDTO {
+public class MyPostByStatusResponseDTO {
     private Long postId;
     private String name;
     private List<String> productImageUrls;
@@ -24,12 +24,12 @@ public class MyPostStatusResponseDTO {
     private String postStatus;
     private LocalDateTime createdAt;
 
-    public static MyPostStatusResponseDTO from(Post post) {
+    public static MyPostByStatusResponseDTO from(Post post) {
         List<String> productImageUrls = post.getProductImages().stream()
                 .map(Image::getUrl)
                 .collect(Collectors.toList());
 
-        return MyPostStatusResponseDTO.builder()
+        return MyPostByStatusResponseDTO.builder()
                 .postId(post.getPostId())
                 .name(post.getName())
                 .productImageUrls(productImageUrls)
