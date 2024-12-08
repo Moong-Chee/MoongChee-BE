@@ -24,4 +24,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                            @Param("tradeType") TradeType tradeType);
 
     List<Post> findByPostStatusNot(PostStatus status);
+
+    List<Post> findByAuthorAndPostStatusNot(User author, PostStatus status);
 }

@@ -13,7 +13,8 @@ public enum PostResponseMessage {
     POST_SEARCH_SUCCESS(200, "게시물 검색 성공"),
     POST_LIKE_SUCCESS(200, "게시물 관심 등록 성공"),
     POST_LIKE_REMOVE_SUCCESS(200, "게시물 관심 등록 삭제 성공"),
-    POST_GETLIKE_SUCCESS(200, "관심 대여 게시물 조회 성공");
+    POST_GETLIKE_SUCCESS(200, "관심 대여 게시물 조회 성공"),
+    POST_MY_ACTIVE_SUCCESS(200, "나의 진행중인 거래 조회 성공");
     private final int code;
     private final String message;
 }

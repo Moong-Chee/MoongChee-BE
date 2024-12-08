@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import project.MoongChee.domain.post.dto.MyPostStatusResponseDTO;
 import project.MoongChee.domain.post.dto.PostGetDetailResponseDTO;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
@@ -110,4 +111,13 @@ public class PostController {
         return ApiData.response(PostResponseMessage.POST_GETLIKE_SUCCESS.getCode(),
                 PostResponseMessage.POST_GETLIKE_SUCCESS.getMessage(), likes);
     }
+
+    @GetMapping("myActive")//나의 게시물 중 진행중인 거래 조회
+    @Operation(summary = "나의 게시물 중 진행중인 거래 조회")
+    public ApiData<List<MyPostStatusResponseDTO>> getMyActivePosts(@AuthenticationPrincipal String email) {
+        List<MyPostStatusResponseDTO> myActivePosts = postService.getMyActivePosts(email);
+        return ApiData.response(PostResponseMessage.POST_MY_ACTIVE_SUCCESS.getCode(),
+                PostResponseMessage.POST_MY_ACTIVE_SUCCESS.getMessage(), myActivePosts);
+    }
+
 }
