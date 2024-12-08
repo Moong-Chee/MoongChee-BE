@@ -1,7 +1,7 @@
 package project.MoongChee.domain.chat.controller;
 
 import static project.MoongChee.domain.chat.controller.ResponseMessage.CHATROOM_CREATE_SUCCESS;
-import static project.MoongChee.domain.chat.controller.ResponseMessage.ROOMID_GET;
+import static project.MoongChee.domain.chat.controller.ResponseMessage.ROOMID_GET_SUCCESS;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +22,7 @@ import project.MoongChee.global.common.response.ApiData;
 @Tag(name = "CHATROOM", description = "채팅방 컨트롤러")
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/chatRoom")
+@RequestMapping("/api/v1/chatRooms")
 @RequiredArgsConstructor
 public class ChatRoomController {
 
@@ -32,15 +32,15 @@ public class ChatRoomController {
     @Operation(summary = "채팅방 생성")
     public ApiData<ChatRoomResponse> createChatRoom(
             @RequestBody @Valid CreateChatRoomRequest createChatRoomRequest) {
-        ChatRoomResponse response = chatRoomService.saveChatRoom(createChatRoomRequest);
+        ChatRoomResponse response = chatRoomService.createChatRoom(createChatRoomRequest);
         return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), response);
     }
 
     @GetMapping("/{user1Id}/{user2Id}")
     @Operation(summary = "채팅방 존재 여부 조회")
-    public ApiData<ChatRoomResponse> existChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
-        ChatRoomResponse response = chatRoomService.findUser1User2ChatRoom(user1Id, user2Id);
+    public ApiData<ChatRoomResponse> findChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
+        ChatRoomResponse response = chatRoomService.findChatRoomByUserIds(user1Id, user2Id);
 
-        return ApiData.response(ROOMID_GET.getCode(), ROOMID_GET.getMessage(), response);
+        return ApiData.response(ROOMID_GET_SUCCESS.getCode(), ROOMID_GET_SUCCESS.getMessage(), response);
     }
 }

@@ -21,7 +21,7 @@ public class ChatRoomService {
     private final UserService userService;
 
     // 채팅방 생성
-    public ChatRoomResponse saveChatRoom(CreateChatRoomRequest findChatRoomRequestDto) {
+    public ChatRoomResponse createChatRoom(CreateChatRoomRequest findChatRoomRequestDto) {
         User user1 = userService.find(findChatRoomRequestDto.user1Id());
         User user2 = userService.find(findChatRoomRequestDto.user2Id());
 
@@ -31,7 +31,7 @@ public class ChatRoomService {
     }
 
     // 유저 아이디로 채팅방 조회
-    public ChatRoomResponse findUser1User2ChatRoom(Long user1Id, Long user2Id) {
+    public ChatRoomResponse findChatRoomByUserIds(Long user1Id, Long user2Id) {
         Long result = chatRoomRepository.findRoomIdByUserIds(user1Id, user2Id)
                 .orElseThrow(ChatRoomNotFoundException::new);
         return new ChatRoomResponse(result);

@@ -19,7 +19,7 @@ import project.MoongChee.global.common.domain.BaseTimeEntity;
 @Builder
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자 접근 레벨 PROTECTED
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class ChatRoom extends BaseTimeEntity {
     @Id
