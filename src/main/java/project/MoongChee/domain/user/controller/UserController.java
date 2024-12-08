@@ -38,7 +38,7 @@ import project.MoongChee.global.common.response.ApiData;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/auth/google")
+    @PostMapping("/login")
     @Operation(summary = "구글 소셜 회원가입 및 로그인")
     public ApiData<SocialLoginResponse> socialLogin(@RequestBody @Valid SocialLoginRequest request) {
         SocialLoginResponse response = userService.authenticate(request.authCode());
