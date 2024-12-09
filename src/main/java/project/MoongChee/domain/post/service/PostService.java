@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.image.dto.request.ImageDto;
 import project.MoongChee.domain.image.service.S3ImageService;
+import project.MoongChee.domain.post.dto.MyPostByStatusResponseDTO;
 import project.MoongChee.domain.post.dto.PostGetDetailResponseDTO;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
@@ -150,6 +151,24 @@ public class PostService {
         User user = userService.find(email);
         return user.getLikes().stream()
                 .map(PostResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional//진행중인 거래 조회
+    public List<MyPostByStatusResponseDTO> getMyActivePosts(String email) {
+        User user = userService.find(email);
+        List<Post> myActivePosts = postRepository.findByAuthorAndPostStatusNot(user, PostStatus.CLOSED);
+        return myActivePosts.stream()
+                .map(MyPostByStatusResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional//종료된 거래 조회
+    public List<MyPostByStatusResponseDTO> getMyClosedPosts(String email) {
+        User user = userService.find(email);
+        List<Post> myActivePosts = postRepository.findByAuthorAndPostStatus(user, PostStatus.CLOSED);
+        return myActivePosts.stream()
+                .map(MyPostByStatusResponseDTO::from)
                 .collect(Collectors.toList());
     }
 }
