@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import project.MoongChee.domain.post.dto.MyPostByStatusResponseDTO;
 import project.MoongChee.domain.post.dto.PostGetDetailResponseDTO;
 import project.MoongChee.domain.post.dto.PostRequestDTO;
 import project.MoongChee.domain.post.dto.PostResponseDTO;
@@ -104,28 +103,5 @@ public class PostController {
                 PostResponseMessage.POST_LIKE_REMOVE_SUCCESS.getMessage());
     }
 
-    @GetMapping("like")//관심 게시물 조회
-    @Operation(summary = "관심 대여 게시물 조회")
-    public ApiData<List<PostResponseDTO>> getLikePosts(@AuthenticationPrincipal String email) {
-        List<PostResponseDTO> likes = postService.getLikePosts(email);
-        return ApiData.response(PostResponseMessage.POST_GETLIKE_SUCCESS.getCode(),
-                PostResponseMessage.POST_GETLIKE_SUCCESS.getMessage(), likes);
-    }
-
-    @GetMapping("myActive")//나의 게시물 중 진행중인 거래 조회
-    @Operation(summary = "나의 게시물 중 진행중인 거래 조회")
-    public ApiData<List<MyPostByStatusResponseDTO>> getMyActivePosts(@AuthenticationPrincipal String email) {
-        List<MyPostByStatusResponseDTO> myActivePosts = postService.getMyActivePosts(email);
-        return ApiData.response(PostResponseMessage.POST_MY_ACTIVE_SUCCESS.getCode(),
-                PostResponseMessage.POST_MY_ACTIVE_SUCCESS.getMessage(), myActivePosts);
-    }
-
-    @GetMapping("myClosed")//나의 게시물 중 종료된 거래 조회
-    @Operation(summary = "나의 게시물 중 종료된 거래 조회")
-    public ApiData<List<MyPostByStatusResponseDTO>> getMyClosedPosts(@AuthenticationPrincipal String email) {
-        List<MyPostByStatusResponseDTO> myClosedPosts = postService.getMyClosedPosts(email);
-        return ApiData.response(PostResponseMessage.POST_MY_CLOSED_SUCCESS.getCode(),
-                PostResponseMessage.POST_MY_CLOSED_SUCCESS.getMessage(), myClosedPosts);
-    }
 
 }

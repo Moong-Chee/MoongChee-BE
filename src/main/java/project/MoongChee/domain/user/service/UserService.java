@@ -5,7 +5,6 @@ import static project.MoongChee.domain.user.domain.LoginStatus.REGISTER;
 
 import jakarta.transaction.Transactional;
 import java.io.IOException;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,13 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import project.MoongChee.domain.image.domain.Image;
 import project.MoongChee.domain.image.dto.request.ImageDto;
 import project.MoongChee.domain.image.service.ImageService;
-import project.MoongChee.domain.user.domain.Department;
 import project.MoongChee.domain.user.domain.Status;
 import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.dto.request.InitRequest;
-import project.MoongChee.domain.user.dto.response.MyProfileResponse;
 import project.MoongChee.domain.user.dto.response.SocialLoginResponse;
-import project.MoongChee.domain.user.dto.response.UserProfileResponse;
 import project.MoongChee.domain.user.exception.InvalidEmailException;
 import project.MoongChee.domain.user.exception.UserNotFoundException;
 import project.MoongChee.domain.user.repository.UserRepository;
@@ -96,25 +92,6 @@ public class UserService {
             savedImage.update(imageDto);
         }
         user.initProfile(dto, savedImage);
-    }
-
-    /*
-     * 구글 계정 기본 프로필 정보 반환
-     */
-    public MyProfileResponse getMyProfile(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
-        Department department = user.getDepartment();
-        long studentNumber = user.getStudentNumber();
-        LocalDate birthday = user.getBirthday();
-
-        return MyProfileResponse.from(user, department, studentNumber, birthday);
-    }
-
-    public UserProfileResponse getUserProfile(Long userId) {
-        User user = userRepository.findIdById(userId)
-                .orElseThrow(UserNotFoundException::new);
-        return UserProfileResponse.from(user);
     }
 
     /*
