@@ -19,14 +19,14 @@ import project.MoongChee.domain.user.dto.response.UserProfileResponse;
 import project.MoongChee.domain.user.service.ProfileService;
 import project.MoongChee.global.common.response.ApiData;
 
-@Tag(name = "MyPage", description = "마이페이지 관련 컨트롤러")
+@Tag(name = "Profile", description = "프로필 관련 컨트롤러")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile")
 public class ProfileController {
     private final ProfileService profileService;
 
-    @GetMapping("/myPage")//마이페이지 앤드포인트
+    @GetMapping//마이페이지 앤드포인트
     @Operation(summary = "마이페이지 조회")
     public ApiData<MyPageResponseDTO> geyMyPage(@AuthenticationPrincipal @Parameter(hidden = true) String email) {
         MyPageResponseDTO myPage = profileService.getMyPage(email);
@@ -34,16 +34,16 @@ public class ProfileController {
                 myPage);
     }
 
-    @GetMapping("/myPage/myProfile")
-    @Operation(summary = "내 프로필 조회")
+    @GetMapping("/details")
+    @Operation(summary = "내 프로필 상세 조회")
     public ApiData<MyProfileResponse> getMyProfile(@AuthenticationPrincipal @Parameter(hidden = true) String email) {
         return ApiData.response(ResponseMessage.MY_PROFILE_SUCCESS.getCode(),
                 ResponseMessage.MY_PROFILE_SUCCESS.getMessage(),
                 profileService.getMyProfile(email));
     }
 
-    @GetMapping("/{userId}")
-    @Operation(summary = "상대방 프로필 조회")
+    @GetMapping("/details/{userId}")
+    @Operation(summary = "유저 프로필 상세 조회")
     public ApiData<UserProfileResponse> getUserProfileByCustomId(@PathVariable Long userId) {
         return ApiData.response(
                 ResponseMessage.USER_PROFILE_SUCCESS.getCode(),
@@ -52,24 +52,24 @@ public class ProfileController {
         );
     }
 
-    @GetMapping("/myPage/like")//관심 게시물 조회
-    @Operation(summary = "관심 대여 게시물 조회")
+    @GetMapping("/my-like-posts")//관심 게시물 조회
+    @Operation(summary = "마이페이지 관심 게시물 조회")
     public ApiData<List<PostResponseDTO>> getLikePosts(@AuthenticationPrincipal String email) {
         List<PostResponseDTO> likes = profileService.getLikePosts(email);
         return ApiData.response(PostResponseMessage.POST_GETLIKE_SUCCESS.getCode(),
                 PostResponseMessage.POST_GETLIKE_SUCCESS.getMessage(), likes);
     }
 
-    @GetMapping("/myPage/myActive")//나의 게시물 중 진행중인 거래 조회
-    @Operation(summary = "나의 게시물 중 진행중인 거래 조회")
+    @GetMapping("/my-active-posts")//나의 게시물 중 진행중인 거래 조회
+    @Operation(summary = "마이페이지 진행중인 거래 조회")
     public ApiData<List<MyPostByStatusResponseDTO>> getMyActivePosts(@AuthenticationPrincipal String email) {
         List<MyPostByStatusResponseDTO> myActivePosts = profileService.getMyActivePosts(email);
         return ApiData.response(PostResponseMessage.POST_MY_ACTIVE_SUCCESS.getCode(),
                 PostResponseMessage.POST_MY_ACTIVE_SUCCESS.getMessage(), myActivePosts);
     }
 
-    @GetMapping("/myPage/myClosed")//나의 게시물 중 종료된 거래 조회
-    @Operation(summary = "나의 게시물 중 종료된 거래 조회")
+    @GetMapping("/my-closed-posts")//나의 게시물 중 종료된 거래 조회
+    @Operation(summary = "마이페이지 종료된 거래 조회")
     public ApiData<List<MyPostByStatusResponseDTO>> getMyClosedPosts(@AuthenticationPrincipal String email) {
         List<MyPostByStatusResponseDTO> myClosedPosts = profileService.getMyClosedPosts(email);
         return ApiData.response(PostResponseMessage.POST_MY_CLOSED_SUCCESS.getCode(),
