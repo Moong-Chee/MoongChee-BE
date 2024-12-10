@@ -28,7 +28,7 @@ public class PostRequestDTO {
     private PostKeyword keyword;
 
     @NotNull
-    private LocalDate returnDate;
+    private LocalDate date;
 
     @NotNull
     private Integer price;

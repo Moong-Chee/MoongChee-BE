@@ -46,7 +46,7 @@ public class PostGetDetailResponseDTO {
     private String postStatus;
 
     @NotNull
-    private LocalDate returnDate;
+    private LocalDate date;
 
     @NotNull
     private Integer price;
@@ -77,7 +77,7 @@ public class PostGetDetailResponseDTO {
                 .productContent(post.getProductContent())
                 .keyword(post.getKeyword().name())
                 .postStatus(post.getPostStatus().name())
-                .returnDate(post.getReturnDate())
+                .date(post.getDate())
                 .price(post.getPrice())
                 .createdAt(post.getCreatedAt())
                 .reviewCount(ReviewResponseDTO.getReviewCount())
