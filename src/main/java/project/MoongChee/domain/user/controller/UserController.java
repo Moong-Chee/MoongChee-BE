@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -35,7 +34,7 @@ import project.MoongChee.global.common.response.ApiData;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     @Operation(summary = "구글 소셜 회원가입 및 로그인")
     public ApiData<SocialLoginResponse> socialLogin(@RequestParam("code") String authCode) {
         SocialLoginResponse response = userService.authenticate(authCode);
