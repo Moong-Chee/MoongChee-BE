@@ -33,7 +33,7 @@ public class MyPostByStatusResponseDTO {
                 .postId(post.getPostId())
                 .name(post.getName())
                 .productImageUrls(productImageUrls)
-                .price(post.getprice())
+                .price(post.getPrice())
                 .postStatus(post.getPostStatus().name())
                 .createdAt(post.getCreatedAt())
                 .build();

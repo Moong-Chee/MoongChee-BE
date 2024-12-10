@@ -58,12 +58,12 @@ public class PostController {
                 PostResponseMessage.POST_UPDATE_SUCCESS.getMessage(), response);
     }
 
-    @GetMapping//리스트를 통한 구현. 피그마를 보니 페이지를 나누지 않고 스크롤을 통한 구현이 이루어졌기에 리스트를 통한 구현으로 수정하였습니다.
+    @GetMapping//전체 게시물 조회
     @Operation(summary = "전체 게시물 조회")
     public ApiData<List<PostResponseDTO>> getAllPosts() {
         List<PostResponseDTO> postPage = postService.getAllPosts();
-        return ApiData.response(PostResponseMessage.POST_GETALL_SUCCESS.getCode(),
-                PostResponseMessage.POST_GETALL_SUCCESS.getMessage(), postPage);
+        return ApiData.response(PostResponseMessage.POST_GET_ALL_SUCCESS.getCode(),
+                PostResponseMessage.POST_GET_ALL_SUCCESS.getMessage(), postPage);
     }
 
     //게시물 하나 조회
@@ -71,8 +71,8 @@ public class PostController {
     @Operation(summary = "게시물 하나 조회")
     public ApiData<PostGetDetailResponseDTO> getPostById(@PathVariable Long postId) {
         PostGetDetailResponseDTO post = postService.getPostById(postId);
-        return ApiData.response(PostResponseMessage.POST_GETONE_SUCCESS.getCode(),
-                PostResponseMessage.POST_GETONE_SUCCESS.getMessage(), post);
+        return ApiData.response(PostResponseMessage.POST_GET_ONE_SUCCESS.getCode(),
+                PostResponseMessage.POST_GET_ONE_SUCCESS.getMessage(), post);
     }
 
     @GetMapping("/search")//리스트를 통한 구현

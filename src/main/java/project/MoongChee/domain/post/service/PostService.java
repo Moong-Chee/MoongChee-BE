@@ -39,7 +39,7 @@ public class PostService {
 
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO requestDTO, List<MultipartFile> productImages, String email)
-            throws IOException {//대여 게시물 생성
+            throws IOException {//거래 게시물 생성
         User author = userService.find(email);//현재 로그인한 사용자 조회
         Post post = Post.builder()
                 .author(author)
@@ -64,7 +64,7 @@ public class PostService {
 
     @Transactional
     public PostResponseDTO updatePost(Long postId, PostUpdateRequestDTO requestDTO, List<MultipartFile> productImages,
-                                      String email) throws IOException {//대여 게시물 수정
+                                      String email) throws IOException {//거래 게시물 수정
         User author = userService.find(email);
         Post post = postRepository.findByPostIdAndAuthor(postId, author)
                 .orElseThrow(PostNotFoundException::new);//게시물이 없거나 작성자가 아니면 예외

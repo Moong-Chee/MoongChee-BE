@@ -56,8 +56,8 @@ public class ProfileController {
     @Operation(summary = "마이페이지 관심 게시물 조회")
     public ApiData<List<PostResponseDTO>> getLikePosts(@AuthenticationPrincipal String email) {
         List<PostResponseDTO> likes = profileService.getLikePosts(email);
-        return ApiData.response(PostResponseMessage.POST_GETLIKE_SUCCESS.getCode(),
-                PostResponseMessage.POST_GETLIKE_SUCCESS.getMessage(), likes);
+        return ApiData.response(PostResponseMessage.POST_GET_LIKE_SUCCESS.getCode(),
+                PostResponseMessage.POST_GET_LIKE_SUCCESS.getMessage(), likes);
     }
 
     @GetMapping("/my-active-posts")//나의 게시물 중 진행중인 거래 조회
