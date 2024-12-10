@@ -31,9 +31,10 @@ public class AuthService {
     private final RestClient restClient = RestClient.create();
 
     public GoogleTokenResponse getGoogleAccessToken(String authCode) {
-        
+        // 디코딩된 상태로 보내야 요청이 정상적으로 감
         String decode = URLDecoder.decode(authCode, StandardCharsets.UTF_8);
 
+        // 요청 body를 application/x-www-form-urlencoded에 맞게 보내기 위해 MultiValueMap 사용
         MultiValueMap<String, String> bodyParams = new LinkedMultiValueMap<>();
         bodyParams.add("code", decode);
         bodyParams.add("client_id", clientId);

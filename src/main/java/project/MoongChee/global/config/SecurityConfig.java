@@ -84,7 +84,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.addAllowedOriginPattern("http://localhost:5174");
-        configuration.addAllowedOriginPattern("http://43.203.202.100.nip.io:8080");
+        configuration.addAllowedOriginPattern("https://moong.vercel.app/");
         configuration.addAllowedOrigin("http://127.0.0.1:5500");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
