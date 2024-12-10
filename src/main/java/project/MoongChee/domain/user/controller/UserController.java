@@ -45,7 +45,7 @@ public class UserController {
         return ApiData.response(REGISTER_SUCCESS.getCode(), REGISTER_SUCCESS.getMessage(), response);
     }
 
-    @GetMapping("/api/v1/users/oauth/google/callback")
+    @GetMapping("/oauth/google/callback")
     @Operation(summary = "구글 리디렉션 콜백")
     public ResponseEntity<String> googleCallback(@RequestParam("code") String code) {
 
