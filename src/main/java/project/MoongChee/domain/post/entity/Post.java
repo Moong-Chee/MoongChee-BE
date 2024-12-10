@@ -71,7 +71,7 @@ public class Post extends BaseTimeEntity {
     private LocalDate returnDate;//프론트에서 input type="date"를 사용했다는 가정을 하여 LocalDate 사용
 
     @Column(name = "rental_price")
-    private Integer rentalPrice;
+    private Integer price;
 
     @ManyToMany(mappedBy = "likes")
     private List<User> likeUsers = new ArrayList<>();

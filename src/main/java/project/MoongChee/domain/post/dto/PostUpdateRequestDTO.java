@@ -31,5 +31,5 @@ public class PostUpdateRequestDTO {
     private LocalDate returnDate;
 
     @NotNull
-    private Integer rentalPrice;
+    private Integer price;
 }

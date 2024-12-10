@@ -49,7 +49,7 @@ public class PostGetDetailResponseDTO {
     private LocalDate returnDate;
 
     @NotNull
-    private Integer rentalPrice;
+    private Integer price;
 
     private LocalDateTime createdAt;
 
@@ -78,7 +78,7 @@ public class PostGetDetailResponseDTO {
                 .keyword(post.getKeyword().name())
                 .postStatus(post.getPostStatus().name())
                 .returnDate(post.getReturnDate())
-                .rentalPrice(post.getRentalPrice())
+                .price(post.getprice())
                 .createdAt(post.getCreatedAt())
                 .reviewCount(ReviewResponseDTO.getReviewCount())
                 .averageScore(ReviewResponseDTO.getAverageScore())
