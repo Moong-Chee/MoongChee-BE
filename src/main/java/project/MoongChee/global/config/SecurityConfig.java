@@ -53,6 +53,7 @@ public class SecurityConfig {
                                         .requestMatchers("/api/v1/users/login").permitAll()
                                         .requestMatchers("/api/v1/admin/**").permitAll()
                                         .requestMatchers("/ws", "/ws/**").permitAll()
+                                        .requestMatchers("/error").permitAll()
                                         .anyRequest().authenticated()
 
                 )

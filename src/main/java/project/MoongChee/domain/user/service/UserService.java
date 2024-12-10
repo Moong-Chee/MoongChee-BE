@@ -49,11 +49,9 @@ public class UserService {
             throw new InvalidEmailException(); // 이메일 도메인이 gachon.ac.kr이 아닌 경우
         }
 
-        // 가입된 유저라면 로그인
         if (existUser(email)) {
             return loginUser(userInfo.email());
         }
-        // 아니라면 회원가입
         return registerUser(userInfo);
     }
 
@@ -78,7 +76,7 @@ public class UserService {
     }
 
     /*
-     * 회원가입 시 초기 정보 입력
+     * 회원가입 후 초기 정보 입력
      */
     @Transactional
     public void initProfile(InitRequest dto, MultipartFile profileImage, String email) throws IOException {
