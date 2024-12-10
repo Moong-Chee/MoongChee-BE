@@ -49,7 +49,7 @@ public class PostService {
                 .keyword(requestDTO.getKeyword())
                 .postStatus(PostStatus.ACTIVE)//기본값 ACTIVE
                 .returnDate(requestDTO.getReturnDate())
-                .price(requestDTO.getprice())
+                .price(requestDTO.getPrice())
                 .build();
         postRepository.save(post);
         if (productImages != null && !productImages.isEmpty()) {
@@ -74,7 +74,7 @@ public class PostService {
         post.setKeyword(requestDTO.getKeyword());
         post.setPostStatus(requestDTO.getPostStatus());
         post.setReturnDate(requestDTO.getReturnDate());
-        post.setprice(requestDTO.getprice());
+        post.setPrice(requestDTO.getPrice());
 
         if (productImages != null && !productImages.isEmpty()) {
             post.getProductImages().clear();

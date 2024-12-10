@@ -78,7 +78,7 @@ public class PostGetDetailResponseDTO {
                 .keyword(post.getKeyword().name())
                 .postStatus(post.getPostStatus().name())
                 .returnDate(post.getReturnDate())
-                .price(post.getprice())
+                .price(post.getPrice())
                 .createdAt(post.getCreatedAt())
                 .reviewCount(ReviewResponseDTO.getReviewCount())
                 .averageScore(ReviewResponseDTO.getAverageScore())

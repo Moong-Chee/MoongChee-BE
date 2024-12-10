@@ -65,7 +65,7 @@ public class PostResponseDTO {
                 .keyword(post.getKeyword().name())
                 .postStatus(post.getPostStatus().name())
                 .returnDate(post.getReturnDate())
-                .price(post.getprice())
+                .price(post.getPrice())
                 .createdAt(post.getCreatedAt())
                 .build();
     }
