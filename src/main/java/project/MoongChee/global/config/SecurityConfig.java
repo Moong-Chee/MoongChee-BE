@@ -52,6 +52,7 @@ public class SecurityConfig {
                                                 "/swagger-ui/**", "/swagger/**").permitAll()
                                         .requestMatchers("/api/v1/users/login").permitAll()
                                         .requestMatchers("/api/v1/users/oauth/google/callback").permitAll()
+                                        .requestMatchers("http://43.203.202.100.nip.io").permitAll()
                                         .requestMatchers("/api/v1/admin/**").permitAll()
                                         .requestMatchers("/ws", "/ws/**").permitAll()
                                         .requestMatchers("/error").permitAll()
