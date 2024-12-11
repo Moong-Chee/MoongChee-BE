@@ -43,10 +43,10 @@ public class PostResponseDTO {
     private String postStatus;
 
     @NotNull
-    private LocalDate returnDate;
+    private LocalDate date;
 
     @NotNull
-    private Integer rentalPrice;
+    private Integer price;
 
     private LocalDateTime createdAt;
 
@@ -64,8 +64,8 @@ public class PostResponseDTO {
                 .productContent(post.getProductContent())
                 .keyword(post.getKeyword().name())
                 .postStatus(post.getPostStatus().name())
-                .returnDate(post.getReturnDate())
-                .rentalPrice(post.getRentalPrice())
+                .date(post.getDate())
+                .price(post.getPrice())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

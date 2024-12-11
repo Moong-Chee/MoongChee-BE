@@ -20,7 +20,7 @@ public class MyPostByStatusResponseDTO {
     private Long postId;
     private String name;
     private List<String> productImageUrls;
-    private Integer rentalPrice;
+    private Integer price;
     private String postStatus;
     private LocalDateTime createdAt;
 
@@ -33,7 +33,7 @@ public class MyPostByStatusResponseDTO {
                 .postId(post.getPostId())
                 .name(post.getName())
                 .productImageUrls(productImageUrls)
-                .rentalPrice(post.getRentalPrice())
+                .price(post.getPrice())
                 .postStatus(post.getPostStatus().name())
                 .createdAt(post.getCreatedAt())
                 .build();

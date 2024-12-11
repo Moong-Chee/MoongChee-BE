@@ -39,7 +39,7 @@ public class PostService {
 
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO requestDTO, List<MultipartFile> productImages, String email)
-            throws IOException {//대여 게시물 생성
+            throws IOException {//거래 게시물 생성
         User author = userService.find(email);//현재 로그인한 사용자 조회
         Post post = Post.builder()
                 .author(author)
@@ -48,8 +48,8 @@ public class PostService {
                 .productContent(requestDTO.getProductContent())
                 .keyword(requestDTO.getKeyword())
                 .postStatus(PostStatus.ACTIVE)//기본값 ACTIVE
-                .returnDate(requestDTO.getReturnDate())
-                .rentalPrice(requestDTO.getRentalPrice())
+                .date(requestDTO.getDate())
+                .price(requestDTO.getPrice())
                 .build();
         postRepository.save(post);
         if (productImages != null && !productImages.isEmpty()) {
@@ -64,7 +64,7 @@ public class PostService {
 
     @Transactional
     public PostResponseDTO updatePost(Long postId, PostUpdateRequestDTO requestDTO, List<MultipartFile> productImages,
-                                      String email) throws IOException {//대여 게시물 수정
+                                      String email) throws IOException {//거래 게시물 수정
         User author = userService.find(email);
         Post post = postRepository.findByPostIdAndAuthor(postId, author)
                 .orElseThrow(PostNotFoundException::new);//게시물이 없거나 작성자가 아니면 예외
@@ -73,8 +73,8 @@ public class PostService {
         post.setProductContent(requestDTO.getProductContent());
         post.setKeyword(requestDTO.getKeyword());
         post.setPostStatus(requestDTO.getPostStatus());
-        post.setReturnDate(requestDTO.getReturnDate());
-        post.setRentalPrice(requestDTO.getRentalPrice());
+        post.setDate(requestDTO.getDate());
+        post.setPrice(requestDTO.getPrice());
 
         if (productImages != null && !productImages.isEmpty()) {
             post.getProductImages().clear();
