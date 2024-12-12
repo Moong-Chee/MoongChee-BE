@@ -37,21 +37,16 @@ public class UserController {
     @GetMapping("/login")
     @Operation(summary = "구글 소셜 회원가입 및 로그인")
     public ApiData<SocialLoginResponse> socialLogin(@RequestParam("code") String authCode) {
-        log.info("Received Authorization Code: {}", authCode);
         SocialLoginResponse response = userService.authenticate(authCode);
-        log.info("Login/Signup Status: {}", response.status());
         if (response.status() == LoginStatus.LOGIN) {
-            log.info("Login Status: {}", response.status());
             return ApiData.response(LOGIN_SUCCESS.getCode(), LOGIN_SUCCESS.getMessage(), response);
         }
-        log.info("Signup Status: {}", response.status());
         return ApiData.response(REGISTER_SUCCESS.getCode(), REGISTER_SUCCESS.getMessage(), response);
     }
 
     @GetMapping("/oauth/google/callback")
     @Operation(summary = "구글 리디렉션 콜백")
     public ResponseEntity<String> googleCallback(@RequestParam("code") String code) {
-        log.info("Authorization Code: {}", code);
         // 프론트로 Authorization Code를 전달
         return ResponseEntity.ok(code);
     }
