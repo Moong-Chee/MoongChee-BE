@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -110,9 +111,22 @@ public class PostService {
 
     @Transactional//리스트를 이용한 게시물 검색으로 수정
     public List<PostResponseDTO> searchPosts(String name, PostKeyword keyword, TradeType tradeType) {
-        List<Post> searchPosts = postRepository.searchPosts(name, keyword, tradeType)
-                .stream()
-                .collect(Collectors.toList());
+        Specification<Post> spec = SearchSpecifications.isNotClosed();
+
+        // 조건이 null이 아닌 경우에만 Specification 추가
+        if (name != null && !name.isEmpty()) {
+            spec = spec.and(SearchSpecifications.hasNameLike(name));
+        }
+
+        if (keyword != null) {
+            spec = spec.and(SearchSpecifications.hasKeyword(keyword));
+        }
+
+        if (tradeType != null) {
+            spec = spec.and(SearchSpecifications.hasTradeType(tradeType));
+        }
+
+        List<Post> searchPosts = postRepository.findAll(spec);
 
         return searchPosts.stream()
                 .map(PostResponseDTO::from)
