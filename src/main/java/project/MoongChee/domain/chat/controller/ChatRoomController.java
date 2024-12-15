@@ -28,7 +28,7 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    @PostMapping
+    @PostMapping("/{user1Id}/{user2Id}")
     @Operation(summary = "채팅방 생성")
     public ApiData<ChatRoomResponse> createChatRoom(
             @RequestBody @Valid CreateChatRoomRequest createChatRoomRequest) {
