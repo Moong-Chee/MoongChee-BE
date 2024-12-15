@@ -1,6 +1,7 @@
 package project.MoongChee.domain.post.service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -96,6 +97,7 @@ public class PostService {
                 .collect(Collectors.toList());
 
         return postPage.stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .map(PostResponseDTO::from)
                 .collect(Collectors.toList());
     }
