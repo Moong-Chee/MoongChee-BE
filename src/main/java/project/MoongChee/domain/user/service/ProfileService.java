@@ -1,6 +1,7 @@
 package project.MoongChee.domain.user.service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,7 @@ public class ProfileService {
     public List<PostResponseDTO> getLikePosts(String email) {
         User user = userService.find(email);
         return user.getLikes().stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .map(PostResponseDTO::from)
                 .collect(Collectors.toList());
     }
@@ -71,6 +73,7 @@ public class ProfileService {
         User user = userService.find(email);
         List<Post> myActivePosts = postRepository.findByAuthorAndPostStatusNot(user, PostStatus.CLOSED);
         return myActivePosts.stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .map(MyPostByStatusResponseDTO::from)
                 .collect(Collectors.toList());
     }
@@ -80,6 +83,7 @@ public class ProfileService {
         User user = userService.find(email);
         List<Post> myActivePosts = postRepository.findByAuthorAndPostStatus(user, PostStatus.CLOSED);
         return myActivePosts.stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .map(MyPostByStatusResponseDTO::from)
                 .collect(Collectors.toList());
     }

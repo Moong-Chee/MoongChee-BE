@@ -24,6 +24,9 @@ public class PostGetDetailResponseDTO {
     private Long postId;
 
     @NotBlank
+    private Long userId;
+
+    @NotBlank
     private String authorName;
 
     private String profileImageUrl;
@@ -69,6 +72,7 @@ public class PostGetDetailResponseDTO {
 
         return PostGetDetailResponseDTO.builder()
                 .postId(post.getPostId())
+                .userId(post.getAuthor().getId())
                 .authorName(post.getAuthor().getName())
                 .profileImageUrl(profileImageUrl)
                 .tradeType(post.getTradeType().name())
