@@ -1,7 +1,7 @@
 package project.MoongChee.domain.chat.controller;
 
 import static project.MoongChee.domain.chat.controller.ResponseMessage.CHATROOM_CREATE_SUCCESS;
-import static project.MoongChee.domain.chat.controller.ResponseMessage.ROOMID_GET_SUCCESS;
+import static project.MoongChee.domain.chat.controller.ResponseMessage.ROOM_ID_GET_SUCCESS;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,10 +30,9 @@ public class ChatRoomController {
 
     @PostMapping
     @Operation(summary = "채팅방 생성")
-    public ApiData<ChatRoomResponse> createChatRoom(
-            @RequestBody @Valid CreateChatRoomRequest createChatRoomRequest) {
-        ChatRoomResponse response = chatRoomService.createChatRoom(createChatRoomRequest);
-        return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), response);
+    public ApiData<ChatRoomResponse> createChatRoom(@RequestBody @Valid CreateChatRoomRequest request) {
+        ChatRoomResponse chatRoom = chatRoomService.createChatRoom(request);
+        return ApiData.response(CHATROOM_CREATE_SUCCESS.getCode(), CHATROOM_CREATE_SUCCESS.getMessage(), chatRoom);
     }
 
     @GetMapping("/{user1Id}/{user2Id}")
@@ -41,6 +40,6 @@ public class ChatRoomController {
     public ApiData<ChatRoomResponse> findChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
         ChatRoomResponse response = chatRoomService.findChatRoomByUserIds(user1Id, user2Id);
 
-        return ApiData.response(ROOMID_GET_SUCCESS.getCode(), ROOMID_GET_SUCCESS.getMessage(), response);
+        return ApiData.response(ROOM_ID_GET_SUCCESS.getCode(), ROOM_ID_GET_SUCCESS.getMessage(), response);
     }
 }
