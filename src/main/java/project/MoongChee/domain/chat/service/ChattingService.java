@@ -1,20 +1,24 @@
 package project.MoongChee.domain.chat.service;
 
+import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import project.MoongChee.domain.chat.domain.ChatMessage;
 import project.MoongChee.domain.chat.domain.ChatRoom;
+import project.MoongChee.domain.chat.dto.request.MessageDto;
 import project.MoongChee.domain.chat.dto.response.ChatMessageResponse;
-import project.MoongChee.domain.chat.dto.response.ChattingDto;
 import project.MoongChee.domain.chat.dto.response.ChattingListResponse;
 import project.MoongChee.domain.chat.dto.response.LatestMessageDto;
 import project.MoongChee.domain.chat.exception.ChatRoomNotFoundException;
 import project.MoongChee.domain.chat.repository.ChatMessageRepository;
 import project.MoongChee.domain.chat.repository.ChatRoomRepository;
-import project.MoongChee.domain.user.domain.User;
 
 @Service
 @RequiredArgsConstructor
@@ -23,41 +27,29 @@ public class ChattingService {
     private final ChatMessageRepository chatMessageRepository;
 
     // 채팅방 내역 조회
-    public ChattingDto findChatMessages(Long roomId, Integer page, Integer size) {
-        ChatRoom findRoom = validateChatRoom(roomId);
-        User user1 = findRoom.getUser1();
-        User user2 = findRoom.getUser2();
-
-        List<ChatMessageResponse> chatMessageList = generateChatRoomMessages(roomId, page, size);
-        return new ChattingDto(
-                user1.getId(), user2.getId(),
-                user1.getName(), user2.getName(),
-                user1.getProfileImage(), user2.getProfileImage(),
-                chatMessageList
-        );
+    public List<ChatMessageResponse> findChatMessages(Long roomId, Integer page, Integer size) {
+        validateChatRoom(roomId);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ChatMessage> messages = chatMessageRepository.findByRoomIdOrderByCreatedAtDesc(roomId, pageable);
+        return messages.stream()
+                .map(ChatMessageResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     // 채팅방 리스트 조회
     public List<ChattingListResponse> findUserChatRooms(Long userId) {
-        List<ChatRoom> chatRooms = validateChatRommList(userId);
+        List<ChatRoom> rooms = chatRoomRepository.findRoomsByUserId(userId)
+                .orElseThrow(ChatRoomNotFoundException::new);
+        return rooms.stream()
+                .map(room -> {
+                    // 각 채팅방에 대한 최신 메시지 조회
+                    LatestMessageDto latestMessageDto = chatMessageRepository
+                            .findTopByRoomIdOrderByCreatedAtDesc(room.getId())
+                            .map(LatestMessageDto::of)
+                            .orElse(null); // 최신 메시지가 없을 경우 null
 
-        return chatRooms.stream()
-                .map(chatRoom -> {
-                    ChatMessage latestMessage = chatMessageRepository.findTopByRoomIdOrderByCreatedAtDesc(
-                            chatRoom.getId()).orElse(null);
-                    LatestMessageDto latestMessageDto = (latestMessage != null)
-                            ? LatestMessageDto.of(latestMessage) : new LatestMessageDto("", null);
-                    return ChattingListResponse.of(chatRoom, latestMessageDto);
+                    return ChattingListResponse.of(room, latestMessageDto);
                 })
-                .collect(Collectors.toList());
-    }
-
-    private List<ChatMessageResponse> generateChatRoomMessages(Long roomId, Integer page, Integer size) {
-        return chatMessageRepository.findByRoomIdOrderByCreatedAtDesc(
-                        roomId, PageRequest.of(page - 1, size))
-                .getContent()
-                .stream()
-                .map(ChatMessageResponse::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -67,10 +59,16 @@ public class ChattingService {
                 .orElseThrow(ChatRoomNotFoundException::new);
     }
 
-    // 채팅방 리스트 조회 예외처리
-    private List<ChatRoom> validateChatRommList(Long userId) {
-        return chatRoomRepository.findRoomsByUserId(userId)
-                .orElseThrow(ChatRoomNotFoundException::new);
-    }
+    @Transactional
+    public void sendMessage(Long roomId, MessageDto messageDto) {
+        ChatMessage message = ChatMessage.builder()
+                .roomId(roomId)
+                .senderId(messageDto.getSenderId())
+                .senderName(messageDto.getSenderName())
+                .content(messageDto.getContent())
+                .createdAt(LocalDateTime.now())
+                .build();
 
+        chatMessageRepository.save(message);
+    }
 }
