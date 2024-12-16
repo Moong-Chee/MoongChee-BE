@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
-import project.MoongChee.domain.chat.dto.PublishMessage;
 
 @Document(collection = "chatMessage")
 @Getter
@@ -25,14 +24,4 @@ public class ChatMessage {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
-
-    public static ChatMessage of(PublishMessage publishMessage) {
-        return ChatMessage.builder()
-                .roomId(publishMessage.getRoomId())
-                .senderId(publishMessage.getSenderId())
-                .senderName(publishMessage.getSenderName())
-                .content(publishMessage.getContent())
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
 }
