@@ -38,7 +38,7 @@ public class ChatRoomController {
     @GetMapping("/{user1Id}/{user2Id}")
     @Operation(summary = "채팅방 존재 여부 조회")
     public ApiData<ChatRoomResponse> findChatRoom(@PathVariable Long user1Id, @PathVariable Long user2Id) {
-        ChatRoomResponse response = chatRoomService.findChatRoomByUserIds(user1Id, user2Id);
+        ChatRoomResponse response = chatRoomService.findSingleRoomIdByUserIds(user1Id, user2Id);
 
         return ApiData.response(ROOM_ID_GET_SUCCESS.getCode(), ROOM_ID_GET_SUCCESS.getMessage(), response);
     }

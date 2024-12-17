@@ -1,6 +1,6 @@
 package project.MoongChee.domain.chat.service;
 
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ public class ChatRoomService {
 
     // 채팅방 생성
     public ChatRoomResponse createChatRoom(CreateChatRoomRequest request) {
-        Optional<Long> roomId = chatRoomRepository.findRoomIdByUserIds(request.user1Id(), request.user2Id());
-        if (roomId.isPresent()) {
+        List<Long> roomIds = chatRoomRepository.findRoomIdByUserIds(request.user1Id(), request.user2Id());
+        if (!roomIds.isEmpty()) {
             throw new ChatRoomAlreadyExists();
         }
         User user1 = userRepository.findById(request.user1Id())
@@ -37,8 +37,8 @@ public class ChatRoomService {
     }
 
     // 유저 아이디로 채팅방 조회
-    public ChatRoomResponse findChatRoomByUserIds(Long user1Id, Long user2Id) {
-        Long result = chatRoomRepository.findRoomIdByUserIds(user1Id, user2Id)
+    public ChatRoomResponse findSingleRoomIdByUserIds(Long user1Id, Long user2Id) {
+        Long result = chatRoomRepository.findSingleRoomIdByUserIds(user1Id, user2Id)
                 .orElseThrow(ChatRoomNotFoundException::new);
         return new ChatRoomResponse(result);
     }
