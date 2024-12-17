@@ -71,6 +71,7 @@ public class ChattingService {
                 .createdAt(LocalDateTime.now())
                 .build();
         chatMessageRepository.save(message);
+        System.out.println("Saved message: " + message);
 
         // ChatRoom의 lastMessage 업데이트
         ChatRoom chatRoom = chatRoomRepository.findById(roomId)
@@ -78,5 +79,6 @@ public class ChattingService {
         chatRoom.updateLastMessage(message.getContent());
 
         chatMessageRepository.save(message);
+        System.out.println("Saved message: " + message);
     }
 }
