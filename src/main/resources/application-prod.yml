@@ -13,7 +13,7 @@ spring:
       ddl-auto: update
   data:
     mongodb:
-      uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}
+      uri: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}
 
 moongchee:
   jwt:
