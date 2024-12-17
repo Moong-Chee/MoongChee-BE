@@ -2,7 +2,6 @@ package project.MoongChee.domain.chat.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.MoongChee.domain.chat.domain.ChatRoom;
 import project.MoongChee.domain.chat.dto.request.CreateChatRoomRequest;
@@ -14,7 +13,6 @@ import project.MoongChee.domain.user.domain.User;
 import project.MoongChee.domain.user.exception.UserNotFoundException;
 import project.MoongChee.domain.user.repository.UserRepository;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatRoomService {

@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import project.MoongChee.domain.chat.domain.ChatMessage;
@@ -28,11 +26,15 @@ public class ChattingService {
     // 채팅방 내역 조회
     public List<ChatMessageResponse> findChatMessages(Long roomId, Integer page, Integer size) {
         validateChatRoom(roomId);
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<ChatMessage> messages = chatMessageRepository.findByRoomIdOrderByCreatedAtDesc(roomId, pageable);
-        return messages.stream()
-                .map(ChatMessageResponse::fromEntity)
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
+
+        List<ChatMessageResponse> messages = chatMessageRepository
+                .findByRoomIdOrderByCreatedAtDesc(roomId, pageRequest)
+                .getContent() // Page 객체에서 메시지 리스트 반환
+                .stream()
+                .map(ChatMessageResponse::fromEntity) // ChatMessage를 DTO로 변환
                 .collect(Collectors.toList());
+        return messages;
     }
 
     // 채팅방 리스트 조회
@@ -69,7 +71,6 @@ public class ChattingService {
                 .createdAt(LocalDateTime.now())
                 .build();
         chatMessageRepository.save(message);
-        System.out.println("Saved message: " + message);
 
         // ChatRoom의 lastMessage 업데이트
         ChatRoom chatRoom = chatRoomRepository.findById(roomId)
@@ -77,6 +78,5 @@ public class ChattingService {
         chatRoom.updateLastMessage(message.getContent());
 
         chatMessageRepository.save(message);
-        System.out.println("Saved message: " + message);
     }
 }
