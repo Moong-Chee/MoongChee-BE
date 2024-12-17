@@ -70,6 +70,12 @@ public class ChattingService {
                 .content(messageDto.getContent())
                 .createdAt(LocalDateTime.now())
                 .build();
+        chatMessageRepository.save(message);
+
+        // ChatRoom의 lastMessage 업데이트
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(ChatRoomNotFoundException::new);
+        chatRoom.updateLastMessage(message.getContent());
 
         chatMessageRepository.save(message);
     }

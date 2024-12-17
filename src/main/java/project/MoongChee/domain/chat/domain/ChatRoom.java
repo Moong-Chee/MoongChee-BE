@@ -45,4 +45,8 @@ public class ChatRoom extends BaseTimeEntity {
                 .lastMessage("")
                 .build();
     }
+
+    public void updateLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
 }
