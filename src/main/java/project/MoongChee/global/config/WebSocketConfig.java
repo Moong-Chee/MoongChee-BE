@@ -13,8 +13,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 웹소켓이 handshake를 하기 위해 연결하는 endpoint이다.
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*") // 나중에 도메인으로 변경
-                .withSockJS();
+                .setAllowedOriginPatterns("https://moong-chee.vercel.app")
+                .withSockJS(); // 나중에 도메인으로 변경
 
     }
 
