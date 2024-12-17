@@ -38,8 +38,10 @@ public class ChattingService {
 
     // 채팅방 리스트 조회
     public List<ChattingListResponse> findUserChatRooms(Long userId) {
-        List<ChatRoom> rooms = chatRoomRepository.findRoomsByUserId(userId)
-                .orElseThrow(ChatRoomNotFoundException::new);
+        List<ChatRoom> rooms = chatRoomRepository.findRoomsByUserId(userId);
+        if (rooms.isEmpty()) {
+            throw new ChatRoomNotFoundException(); // 빈 리스트일 경우 예외 처리
+        }
         return rooms.stream()
                 .map(room -> {
                     // 각 채팅방에 대한 최신 메시지 조회
