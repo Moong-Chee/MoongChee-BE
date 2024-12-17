@@ -1,6 +1,5 @@
 package project.MoongChee.domain.chat.service;
 
-import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,7 +60,6 @@ public class ChattingService {
                 .orElseThrow(ChatRoomNotFoundException::new);
     }
 
-    @Transactional
     public void sendMessage(Long roomId, MessageDto messageDto) {
         ChatMessage message = ChatMessage.builder()
                 .roomId(roomId)
